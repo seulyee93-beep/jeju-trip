@@ -110,6 +110,13 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .move::before{content:"";position:absolute;left:19px;top:0;bottom:0;border-left:2px dotted #D3D5E6}
 .move svg{flex:none;position:relative;background:var(--bg);z-index:1}
 .gap{height:10px}
+.stop,.move{transition:opacity .3s ease,background .3s ease,box-shadow .3s ease}
+.stop.past,.move.past{opacity:.5}
+.stop.now{background:var(--ok-soft);box-shadow:0 0 0 2px var(--ok),var(--shadow)}
+.stop.now .ico{background:#fff}
+.stop.now .tm{color:#fff;background:var(--ok)}
+.nowtag{display:none;font-size:12px;font-weight:800;color:#fff;background:var(--ok);padding:2px 8px;border-radius:999px;line-height:1.5}
+.stop.now .nowtag{display:inline-block}
 
 /* checklist */
 .ckgroup{background:var(--card);border-radius:20px;padding:8px 17px 6px;margin-bottom:14px;box-shadow:var(--shadow)}
@@ -257,7 +264,11 @@ const CHECK=[
 ];
 
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const todayYmd=(()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
+// ?now=2026-10-07T15:50 으로 특정 시각을 미리 볼 수 있어요
+const nowOverride=(()=>{const q=new URLSearchParams(location.search).get('now');const d=q&&new Date(q);return d&&!isNaN(d)?d:null})();
+const getNow=()=>nowOverride||new Date();
+const ymdOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const todayYmd=(()=>{const d=getNow();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
 
 const WXI={'맑음':'☀️','구름조금':'🌤️','구름많음':'⛅','흐림':'☁️','비':'🌧️'};
 function renderFc(w){if(!w)return'';const c=(lb,x)=>`<div><span class="lb">${lb}</span><span class="v"><em aria-hidden="true">${WXI[x[0]]||''}</em>${esc(x[0])}<small>☂ ${x[1]}%</small></span></div>`;
@@ -269,9 +280,9 @@ function renderDay(d){
   <p class="summary">${esc(d.summary)}</p>`;
   d.notes.forEach(n=>{h+=`<div class="note ${n.type}"><span class="ic">${n.type==='ok'?'✓':'!'}</span><div><b>${esc(n.title)}</b>${esc(n.text)}</div></div>`});
   h+='<ol class="stops">';
-  let prevStop=false;
+  let prevStop=false,lastMin='';
   d.items.forEach(it=>{
-    if(it.move){h+=`<li class="move">${CAR}<span>${esc(it.move)}</span></li>`;prevStop=false;return}
+    if(it.move){h+=`<li class="move" data-move="1">${CAR}<span>${esc(it.move)}</span></li>`;prevStop=false;return}
     if(prevStop)h+='<li class="gap" aria-hidden="true"></li>';
     const meal=it.meal?`<span class="meal ${it.meal[0]}">${esc(it.meal[1])}</span>`:'';
     const chips=it.chips?`<div class="chips">${it.chips.map(c=>`<span class="chip ${c[0]}">${esc(c[1])}</span>`).join('')}</div>`:'';
@@ -283,8 +294,9 @@ function renderDay(d){
     else if(it.chips?.some(c=>c[0]==='baby'))icon='🧸';
     else if(/체크인|숙소|리조트/.test(it.h))icon='🏨';
     else if(/반납|렌터카|인수/.test(it.h))icon='🚙';
-    h+=`<li class="stop${it.key?' key':''}"><div class="ico">${icon}</div>
-    <div><div class="tmrow"><span class="tm${it.alt?' alt':''}">${esc(it.t)}</span>${meal}</div><h3>${esc(it.h)}</h3>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
+    const hm=/^(\d\d):(\d\d)$/.exec(it.t);if(hm)lastMin=+hm[1]*60+ +hm[2];
+    h+=`<li class="stop${it.key?' key':''}" data-min="${lastMin}"><div class="ico">${icon}</div>
+    <div><div class="tmrow"><span class="tm${it.alt?' alt':''}">${esc(it.t)}</span>${meal}<span class="nowtag">지금</span></div><h3>${esc(it.h)}</h3>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
     prevStop=true;
   });
   return h+'</ol></section>';
@@ -324,6 +336,29 @@ updateCount();
 let start=DAYS.find(d=>d.ymd===todayYmd)?.id;
 if(!start){try{start=localStorage.getItem('jejuTab2')}catch(e){}}
 show(document.getElementById(start||'')?start:'day1');
+
+// 오늘 일정에서 지금 시간에 해당하는 항목을 강조하고 지난 항목은 흐리게
+function markNow(){
+  const now=getNow(),ymd=ymdOf(now),min=now.getHours()*60+now.getMinutes();
+  let cur=null;
+  DAYS.forEach(d=>{
+    const lis=[...document.querySelectorAll(`#${d.id} .stops > li`)];
+    lis.forEach(li=>li.classList.remove('now','past'));
+    if(d.ymd!==ymd)return;
+    const stops=lis.filter(li=>li.dataset.min!==undefined&&li.dataset.min!=='');
+    const curMin=Math.max(-1,...stops.map(li=>+li.dataset.min).filter(m=>m<=min));
+    if(curMin<0)return;
+    let reached=false;
+    lis.forEach(li=>{
+      if(li.dataset.min!==undefined&&+li.dataset.min===curMin){li.classList.add('now');reached=true;cur=cur||li}
+      else if(!reached)li.classList.add('past');
+    });
+  });
+  return cur;
+}
+const firstNow=markNow();
+if(firstNow&&firstNow.closest('.day.on'))setTimeout(()=>firstNow.scrollIntoView({block:'center',behavior:'smooth'}),300);
+if(!nowOverride)setInterval(markNow,30000);
 </script>
 </body>
 </html>

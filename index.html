@@ -105,7 +105,7 @@ nav.tabs{position:sticky;top:0;z-index:10;background:rgba(245,245,247,.8);-webki
 .stop.past,.move.past{opacity:.45}
 .stop.now{border-color:var(--primary-focus);box-shadow:0 0 0 1px var(--primary-focus)}
 .stop.now .tm{color:#fff;background:var(--primary)}
-.nowtag{display:none;position:absolute;top:-1px;right:17px;width:34px;padding:9px 0 16px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;line-height:1.2;text-align:center;letter-spacing:-0.12px;clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%)}
+.nowtag{display:none;position:absolute;top:-1px;right:17px;width:34px;padding:9px 0 16px;background:#EF4B5B;color:#fff;font-size:12px;font-weight:600;line-height:1.2;text-align:center;letter-spacing:-0.12px;clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%)}
 .stop.now .nowtag{display:block}
 
 /* checklist */
@@ -172,7 +172,7 @@ const DAYS=[
  notes:[{type:'warn',title:'워터파크 운영 확인',text:'야외 워터파크는 시즌제라 10월 초 운영이 확실하지 않아요. 닫혀 있으면 실내 수영장으로 대체하고, 영아 방수 기저귀 규정도 확인하세요.'}],
  items:[
   {t:'07:30',h:'조식',meal:['breakfast','아침']},
-  {t:'09:30',h:'워터파크 또는 실내 수영장',key:1,chips:[['baby','물놀이']],p:'아기는 30~40분이면 충분해요. 오래 있으면 체온이 떨어져요.'},
+  {t:'09:30',h:'워터파크 또는 실내 수영장',ico:'🤿',key:1,chips:[['baby','물놀이']],p:'아기는 30~40분이면 충분해요. 오래 있으면 체온이 떨어져요.'},
   {t:'12:00',h:'신화월드 안에서 점심',meal:['lunch','점심']},
   {t:'12:30',h:'숙소에서 아기 낮잠',p:'출발이 13:30이라 짧게 재우고, 모자라면 이동 중 차 안에서 마저 자요.'},
   {move:'13:30 출발 · 제주공항까지 약 50분'},
@@ -193,13 +193,13 @@ const DAYS=[
  items:[
   {t:'07:30',h:'조식',meal:['breakfast','아침']},
   {move:'09:30 출발 · 한림까지 약 25분'},
-  {t:'10:00',h:'한림공원',key:1,chips:[['baby','산책']],addr:'제주 제주시 한림읍 한림로 300',map:'한림공원',p:'유모차나 아기띠로 둘러보기 좋아요. 1시간 반이면 충분하고, 아기가 지치면 일찍 나와도 돼요.'},
+  {t:'10:00',h:'한림공원',ico:'🌳',key:1,chips:[['baby','산책']],addr:'제주 제주시 한림읍 한림로 300',map:'한림공원',p:'유모차나 아기띠로 둘러보기 좋아요. 1시간 반이면 충분하고, 아기가 지치면 일찍 나와도 돼요.'},
   {move:'11:30 · 한림로 따라 짧게 이동'},
   {t:'12:00',h:'난춘식당 고기국수 제주협재본점',key:1,meal:['lunch','점심'],chips:[['check','두 곳 중 택1']],addr:'제주 제주시 한림읍 한림로 496',map:'난춘식당 협재',p:'고기국수 한 그릇 메뉴라 아기 동반해도 빨리 먹기 좋아요.'},
   {t:'또는',alt:1,h:'협재흑돼지더꽃돈본점',addr:'제주 제주시 한림읍 한림로 366',map:'협재흑돼지더꽃돈',p:'구워 먹는 동안 시간이 걸려요. 아기 의자와 웨이팅을 확인하세요.'},
-  {t:'13:15',h:'호텔샌드 카페',meal:['snack','카페'],chips:[['check','영업시간 확인']],addr:'제주 제주시 한림읍 한림로 339',map:'호텔샌드 카페',p:'점심 식당에서 가까워서 이동이 짧아요.'},
+  {t:'13:15',h:'호텔샌드 카페',ico:'☕️',meal:['snack','카페'],chips:[['check','영업시간 확인']],addr:'제주 제주시 한림읍 한림로 339',map:'호텔샌드 카페',p:'점심 식당에서 가까워서 이동이 짧아요.'},
   {move:'14:15 출발 · 신화월드까지 약 30분 (카시트 낮잠)'},
-  {t:'15:00',h:'숙소 휴식',key:1,chips:[['baby','낮잠']],p:'아기 낮잠 재우고 어른들도 교대로 쉬어요. 힘이 남으면 리조트 산책.'},
+  {t:'15:00',h:'숙소 휴식',ico:'🛏️',key:1,chips:[['baby','낮잠']],p:'아기 낮잠 재우고 어른들도 교대로 쉬어요. 힘이 남으면 리조트 산책.'},
   {t:'18:00',h:'신화회포차',key:1,meal:['dinner','저녁'],chips:[['check','영업시간·아기의자 확인']],map:'신화회포차',p:'아기 저녁 이유식은 미리 먹이거나 식당에서 데워 먹여요.'}
  ]},
 {id:'day4',w:{am:['구름조금',20],pm:['구름조금',30],lo:19,hi:26},wx:[['신화월드','서귀포 안덕면 날씨'],['제주공항','제주시 날씨']],tab:'4일차',date:'10/10 토',ymd:'2026-10-10',
@@ -278,7 +278,8 @@ function renderDay(d){
     const addr=(it.addr||it.map)?`<div class="addr">${it.map?`<a href="https://map.naver.com/p/search/${encodeURIComponent(it.map)}" target="_blank" rel="noopener">지도</a>`:''}<span>${esc(it.addr||'')}</span></div>`:'';
     const MICON={breakfast:'🍳',lunch:'🍚',dinner:'🍽️',snack:'🍦'};
     let icon='📍';
-    if(it.chips?.some(c=>c[0]==='flight'))icon='✈️';
+    if(it.ico)icon=it.ico;
+    else if(it.chips?.some(c=>c[0]==='flight'))icon='✈️';
     else if(it.meal)icon=MICON[it.meal[0]]||'🍽️';
     else if(it.chips?.some(c=>c[0]==='baby'))icon='🧸';
     else if(/체크인|숙소|리조트/.test(it.h))icon='🏨';

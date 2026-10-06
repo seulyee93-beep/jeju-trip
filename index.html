@@ -81,12 +81,13 @@ nav.tabs{position:sticky;top:0;z-index:10;background:rgba(233,241,253,.85);-webk
 
 /* 일정 */
 .stops{list-style:none;margin:0;padding:0}
-.stop{position:relative;display:grid;grid-template-columns:40px 1fr;gap:14px;padding:12px 0;border-radius:14px}
+.stop{position:relative;display:grid;grid-template-columns:42px 40px 1fr;gap:10px;align-items:start;padding:22px 0;border-radius:14px}
+.stops > .stop + .gap + .stop{border-top:1px solid var(--line)}
+.stop.now,.stop.now + .gap + .stop{border-top-color:transparent}
 .stop .cap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.stop .tm{font-weight:700;font-variant-numeric:tabular-nums;color:var(--sub)}
+.stop .tm{font-size:14px;font-weight:700;line-height:40px;font-variant-numeric:tabular-nums;color:var(--sub);white-space:nowrap}
 .stop.key .tm{color:var(--blue)}
 .stop .tm.alt{font-weight:500;color:var(--cap)}
-.meal::before{content:"· ";color:var(--cap)}
 .meal{color:var(--cap)}
 .chips{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:4px}
 .chip{font-size:12px;font-weight:600;color:var(--cap)}
@@ -96,7 +97,7 @@ nav.tabs{position:sticky;top:0;z-index:10;background:rgba(233,241,253,.85);-webk
 .addr{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--cap)}
 .addr a{flex:none;display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:8px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;text-decoration:none}
 .addr span{min-width:0}
-.move{display:flex;align-items:center;gap:8px;padding:2px 0 2px 54px;font-size:12px;color:var(--cap)}
+.move{display:flex;align-items:center;gap:8px;padding:6px 0 6px 52px;font-size:12px;color:var(--cap)}
 .move svg{flex:none;width:16px;height:16px}
 .gap{display:none}
 
@@ -105,7 +106,7 @@ nav.tabs{position:sticky;top:0;z-index:10;background:rgba(233,241,253,.85);-webk
 .stop.past p,.stop.past .addr,.stop.past .chips{opacity:.5}
 .stop.past .ico{opacity:.5}
 .move.past{opacity:.5}
-.stop.now{background:var(--blue-soft);margin:4px -12px;padding:14px 12px}
+.stop.now{background:var(--blue-soft);margin:4px -12px;padding:22px 12px}
 .stop.now .ico{background:#fff}
 .nowtag{display:none;position:absolute;top:0;right:12px;width:34px;padding:9px 0 16px;background:#EF4B5B;color:#fff;font-size:12px;font-weight:700;line-height:1.2;text-align:center;clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%)}
 .stop.now .nowtag{display:block}
@@ -289,8 +290,8 @@ function renderDay(d){
     else if(/체크인|숙소|리조트/.test(it.h))icon='🏨';
     else if(/반납|렌터카|인수/.test(it.h))icon='🚙';
     const hm=/^(\d\d):(\d\d)$/.exec(it.t);if(hm)lastMin=+hm[1]*60+ +hm[2];
-    h+=`<li class="stop${it.key?' key':''}" data-min="${lastMin}"><span class="nowtag">지금</span><div class="ico">${icon}</div>
-    <div class="tmrow-pad"><div class="cap"><span class="tm${it.alt?' alt':''}">${esc(it.t)}</span>${meal}</div><h3>${esc(it.h)}</h3>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
+    h+=`<li class="stop${it.key?' key':''}" data-min="${lastMin}"><span class="nowtag">지금</span><span class="tm${it.alt?' alt':''}">${esc(it.t)}</span><div class="ico">${icon}</div>
+    <div class="tmrow-pad">${meal?`<div class="cap">${meal}</div>`:''}<h3>${esc(it.h)}</h3>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
     prevStop=true;
   });
   return h+'</ol></div></section>';

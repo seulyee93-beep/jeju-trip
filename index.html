@@ -297,7 +297,7 @@ function renderDay(d){
   const uniq=[...new Set(starts)];
   const fmt=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
   const total=d.items.filter(it=>!it.move&&!it.alt).length;
-  h+=`<div class="tl"><h3 class="tlh">하루 일정</h3><p class="prog" id="prog-${d.id}">${total}개 일정 중 <b>0</b>개 완료</p><ol class="stops">`;
+  h+=`<div class="tl"><h3 class="tlh">${esc(d.tab)} 일정</h3><p class="prog" id="prog-${d.id}">${total}개 일정 중 <b>0</b>개 완료</p><ol class="stops">`;
   let prevStop=false,idx=0;
   d.items.forEach(it=>{
     if(it.move){h+=`<li class="move" data-move="1"><div class="rail"><div class="dots"></div></div><div class="mv">${CAR}<span>${esc(it.move)}</span></div></li>`;prevStop=false;return}

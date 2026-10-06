@@ -79,38 +79,51 @@ nav.tabs{position:sticky;top:0;z-index:10;background:rgba(233,241,253,.85);-webk
 .note .ico{font-size:15px;font-weight:700;color:#fff;background:var(--red)}
 .note.ok .ico{background:var(--blue)}
 
-/* 일정 */
+/* 일정: 타임라인 */
+.prog{font-size:14px;color:var(--sub);margin:-6px 0 18px}
+.prog b{color:var(--blue)}
 .stops{list-style:none;margin:0;padding:0}
-.stop{position:relative;display:grid;grid-template-columns:42px 40px 1fr;gap:10px;align-items:start;padding:22px 0;border-radius:14px}
-.stops > .stop + .gap + .stop{border-top:1px solid var(--line)}
-.stop.now,.stop.now + .gap + .stop{border-top-color:transparent}
-.stop .cap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.stop .tm{font-size:14px;font-weight:700;line-height:40px;font-variant-numeric:tabular-nums;color:var(--sub);white-space:nowrap}
-.stop.key .tm{color:var(--blue)}
-.stop .tm.alt{font-weight:500;color:var(--cap)}
-.meal{color:var(--cap)}
-.chips{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:4px}
-.chip{font-size:12px;font-weight:600;color:var(--cap)}
+.stops > li{display:grid;grid-template-columns:44px 1fr;gap:10px}
+.rail{display:flex;flex-direction:column;align-items:center}
+.rail .t{font-size:12px;font-weight:600;color:var(--cap);font-variant-numeric:tabular-nums;line-height:1.2;padding-top:16px;white-space:nowrap}
+.rail .t.alt{font-weight:500}
+.rail .dots{flex:1;width:6px;min-height:14px;margin-top:6px;background:radial-gradient(circle,#d1d6db 2.5px,transparent 3px) center top/6px 9px repeat-y}
+.stop.past .rail .dots,.stop.now .rail .dots,.move.past .rail .dots{background-image:radial-gradient(circle,#34c759 2.5px,transparent 3px)}
+.stop.now .rail .t,.stop.past .rail .t{color:#34c759}
+.stop{position:relative;padding-bottom:12px}
+.sc{position:relative;border-radius:20px;padding:16px 16px 16px 18px;background:linear-gradient(135deg,#eef6ff,#e0eeff);overflow:hidden}
+.cat-meal .sc{background:linear-gradient(135deg,#fff5ec,#ffe6d6)}
+.cat-play .sc{background:linear-gradient(135deg,#eefaf2,#dcf3e5)}
+.cat-stay .sc{background:linear-gradient(135deg,#f4f0ff,#e7e0ff)}
+.cat-car .sc{background:linear-gradient(135deg,#f2f5f8,#e4eaf0)}
+.cat-cafe .sc{background:linear-gradient(135deg,#fbf5ee,#f1e4d6)}
+.sc .top{display:flex;align-items:flex-start;gap:10px}
+.sc .top > div:first-child{flex:1;min-width:0}
+.sc .big{flex:none;font-size:40px;line-height:1;margin-top:2px}
+.sc .cap{font-size:12px;font-weight:600;color:var(--sub);margin-bottom:2px}
+.stop h3{font-size:19px;font-weight:700;line-height:1.3;margin:0;letter-spacing:-0.5px}
+.when{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:13px;font-weight:600;color:var(--sub);font-variant-numeric:tabular-nums}
+.when svg{flex:none}
+.stop.now .when{color:var(--blue)}
+.chips{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:10px}
+.chip{font-size:12px;font-weight:600;color:var(--sub)}
 .chip.check{color:var(--red)}
-.chip.baby{color:var(--blue)}
-.stop p{margin:4px 0 0;font-size:14px;color:var(--sub);line-height:1.5}
-.addr{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--cap)}
+.stop p{margin:8px 0 0;font-size:14px;color:var(--sub);line-height:1.5}
+.addr{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--cap)}
 .addr a{flex:none;display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:8px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;text-decoration:none}
 .addr span{min-width:0}
-.move{display:flex;align-items:center;gap:8px;padding:6px 0 6px 52px;font-size:12px;color:var(--cap)}
+.move .mv{display:flex;align-items:center;gap:6px;padding:0 4px 12px;font-size:12px;color:var(--cap)}
 .move svg{flex:none;width:16px;height:16px}
 .gap{display:none}
 
 /* 지금 · 지난 일정 */
-.stop.past h3{color:var(--cap);text-decoration:line-through}
-.stop.past p,.stop.past .addr,.stop.past .chips{opacity:.5}
-.stop.past .ico{opacity:.5}
-.move.past{opacity:.5}
-.stop.now{background:var(--blue-soft);margin:4px -12px;padding:22px 12px}
-.stop.now .ico{background:#fff}
-.nowtag{display:none;position:absolute;top:0;right:12px;width:34px;padding:9px 0 16px;background:#EF4B5B;color:#fff;font-size:12px;font-weight:700;line-height:1.2;text-align:center;clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%)}
+.stop.past .sc{opacity:.5}
+.stop.past h3{text-decoration:line-through}
+.move.past .mv{opacity:.5}
+.stop.now .sc{box-shadow:0 0 0 2px #34c759}
+.nowtag{display:none;position:absolute;top:0;right:16px;z-index:1;width:34px;padding:9px 0 16px;background:#EF4B5B;color:#fff;font-size:12px;font-weight:700;line-height:1.2;text-align:center;clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%)}
 .stop.now .nowtag{display:block}
-.stop.now .tmrow-pad{padding-right:40px}
+.stop.now .big{margin-top:34px}
 
 /* 준비물 */
 .cl{list-style:none;margin:0;padding:0}
@@ -148,6 +161,8 @@ footer{margin-top:24px;color:var(--cap);font-size:12px;line-height:1.6;text-alig
 
 <script>
 const CAR='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff" stroke="#d2d2d7"/><path d="M7 14.5h10M8 14.5l1.2-3.3a1 1 0 0 1 .9-.7h3.8a1 1 0 0 1 .9.7l1.2 3.3v1.8H8z" fill="none" stroke="#7a7a7a" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+
+const CLOCK='<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.6V8l2.3 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
 
 const DAYS=[
 {id:'day1',w:{am:['맑음',10],pm:['맑음',10],lo:18,hi:24},wx:[['제주시','제주시 날씨'],['신화월드','서귀포 안덕면 날씨']],tab:'1일차',date:'10/7 수',ymd:'2026-10-07',
@@ -273,25 +288,34 @@ function renderDay(d){
     d.notes.forEach(n=>{h+=`<div class="row note ${n.type}"><div class="ico">${n.type==='ok'?'✓':'!'}</div><div><b>${esc(n.title)}</b><div class="sub">${esc(n.text)}</div></div></div>`});
     h+='</div>';
   }
-  h+='<div class="card"><div class="ct">🗓️ 하루 일정</div><ol class="stops">';
-  let prevStop=false,lastMin='';
+  // 각 일정의 끝 시간 = 다음 일정 시작 시간
+  const toMin=t=>{const m=/^(\d\d):(\d\d)$/.exec(t);return m?+m[1]*60+ +m[2]:null};
+  const starts=[];let last=null;
+  d.items.forEach(it=>{if(it.move)return;const m=toMin(it.t);if(m!==null)last=m;starts.push(last)});
+  const uniq=[...new Set(starts)];
+  const fmt=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+  const total=d.items.filter(it=>!it.move&&!it.alt).length;
+  h+=`<div class="card"><div class="ct">🗓️ 하루 일정</div><p class="prog" id="prog-${d.id}">${total}개 일정 중 <b>0</b>개 완료</p><ol class="stops">`;
+  let prevStop=false,idx=0;
   d.items.forEach(it=>{
-    if(it.move){h+=`<li class="move" data-move="1">${CAR}<span>${esc(it.move)}</span></li>`;prevStop=false;return}
+    if(it.move){h+=`<li class="move" data-move="1"><div class="rail"><div class="dots"></div></div><div class="mv">${CAR}<span>${esc(it.move)}</span></div></li>`;prevStop=false;return}
     if(prevStop)h+='<li class="gap" aria-hidden="true"></li>';
-    const meal=it.meal?`<span class="meal">${esc(it.meal[1])}</span>`:'';
+    const start=starts[idx++],end=uniq[uniq.indexOf(start)+1];
+    const meal=it.meal?`<div class="cap">${esc(it.meal[1])}</div>`:'';
     const chips=it.chips?`<div class="chips">${it.chips.map(c=>`<span class="chip ${c[0]}">${esc(c[1])}</span>`).join('')}</div>`:'';
     const addr=(it.addr||it.map)?`<div class="addr">${it.map?`<a href="https://map.naver.com/p/search/${encodeURIComponent(it.map)}" target="_blank" rel="noopener">지도</a>`:''}<span>${esc(it.addr||'')}</span></div>`:'';
     const MICON={breakfast:'🍳',lunch:'🍚',dinner:'🍽️',snack:'🍦'};
-    let icon='📍';
-    if(it.ico)icon=it.ico;
+    let icon='📍',cat='';
+    if(it.ico){icon=it.ico;cat=it.ico==='☕️'?'cafe':it.ico==='🛏️'?'stay':'play'}
     else if(it.chips?.some(c=>c[0]==='flight'))icon='✈️';
-    else if(it.meal)icon=MICON[it.meal[0]]||'🍽️';
-    else if(it.chips?.some(c=>c[0]==='baby'))icon='🧸';
-    else if(/체크인|숙소|리조트/.test(it.h))icon='🏨';
-    else if(/반납|렌터카|인수/.test(it.h))icon='🚙';
-    const hm=/^(\d\d):(\d\d)$/.exec(it.t);if(hm)lastMin=+hm[1]*60+ +hm[2];
-    h+=`<li class="stop${it.key?' key':''}" data-min="${lastMin}"><span class="nowtag">지금</span><span class="tm${it.alt?' alt':''}">${esc(it.t)}</span><div class="ico">${icon}</div>
-    <div class="tmrow-pad">${meal?`<div class="cap">${meal}</div>`:''}<h3>${esc(it.h)}</h3>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
+    else if(it.meal){icon=MICON[it.meal[0]]||'🍽️';cat='meal'}
+    else if(it.chips?.some(c=>c[0]==='baby')){icon='🧸';cat='play'}
+    else if(/체크인|숙소|리조트/.test(it.h)){icon='🏨';cat='stay'}
+    else if(/반납|렌터카|인수/.test(it.h)){icon='🚙';cat='car'}
+    const range=start==null?'':fmt(start)+(end!=null?' – '+fmt(end):'');
+    h+=`<li class="stop${it.key?' key':''}${cat?' cat-'+cat:''}" data-min="${start??''}" data-end="${end??''}" data-range="${range}">
+    <div class="rail"><span class="t${it.alt?' alt':''}">${esc(it.t)}</span><div class="dots"></div></div>
+    <div class="sc"><span class="nowtag">지금</span><div class="top"><div>${meal}<h3>${esc(it.h)}</h3>${range?`<div class="when">${CLOCK}<span class="rng">${range}</span></div>`:''}</div><div class="big" aria-hidden="true">${icon}</div></div>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
     prevStop=true;
   });
   return h+'</ol></div></section>';
@@ -357,16 +381,27 @@ function markNow(){
   let cur=null;
   DAYS.forEach(d=>{
     const lis=[...document.querySelectorAll(`#${d.id} .stops > li`)];
-    lis.forEach(li=>li.classList.remove('now','past'));
-    if(d.ymd!==ymd)return;
-    const stops=lis.filter(li=>li.dataset.min!==undefined&&li.dataset.min!=='');
-    const curMin=Math.max(-1,...stops.map(li=>+li.dataset.min).filter(m=>m<=min));
-    if(curMin<0)return;
-    let reached=false;
-    lis.forEach(li=>{
-      if(li.dataset.min!==undefined&&+li.dataset.min===curMin){li.classList.add('now');reached=true;cur=cur||li}
-      else if(!reached)li.classList.add('past');
-    });
+    lis.forEach(li=>{li.classList.remove('now','past');const r=li.querySelector('.rng');if(r)r.textContent=li.dataset.range});
+    const stops=lis.filter(li=>li.classList.contains('stop'));
+    const main=stops.filter(li=>!li.querySelector('.t.alt'));
+    let done=0;
+    if(d.ymd<ymd){lis.forEach(li=>li.classList.add('past'));done=main.length}
+    else if(d.ymd===ymd){
+      const curMin=Math.max(-1,...stops.map(li=>+li.dataset.min).filter(m=>m<=min));
+      if(curMin>=0){
+        let reached=false;
+        lis.forEach(li=>{
+          if(li.classList.contains('stop')&&+li.dataset.min===curMin){
+            li.classList.add('now');reached=true;cur=cur||li;
+            const end=li.dataset.end,r=li.querySelector('.rng');
+            if(end!==''&&r)r.textContent=`${+end-min}분 남음`;
+          }
+          else if(!reached)li.classList.add('past');
+        });
+        done=main.filter(li=>li.classList.contains('past')).length;
+      }
+    }
+    const pg=document.querySelector(`#prog-${d.id} b`);if(pg)pg.textContent=done;
   });
   return cur;
 }

@@ -1,6 +1,13 @@
 services:
   - type: web
     name: jeju-trip
-    runtime: static
+    runtime: node
+    plan: free
     buildCommand: echo "no build step"
-    staticPublishPath: .
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    envVars:
+      - key: TURSO_URL
+        sync: false
+      - key: TURSO_TOKEN
+        sync: false

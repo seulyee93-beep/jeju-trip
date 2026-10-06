@@ -328,11 +328,29 @@ function updateCount(){
   document.getElementById('ckcount').textContent=`${done} / ${all.length} 완료`;
   document.querySelectorAll('.ckgroup').forEach(g=>{const c=g.querySelectorAll('input'),n=[...c].filter(x=>x.checked).length;g.querySelector('small').textContent=`${n}/${c.length}`});
 }
+// 서버(Turso)가 있으면 가족 모두와 공유, 없으면(GitHub Pages 등) 이 기기에만 저장
+let shared=false;
+async function loadShared(){
+  try{
+    const r=await fetch('api/checks',{cache:'no-store'});
+    if(!r.ok||!(r.headers.get('content-type')||'').includes('json'))return;
+    const data=await r.json();shared=true;
+    document.querySelectorAll('.cl input').forEach(cb=>{if(cb.id in data){cb.checked=data[cb.id]===1;try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}}});
+    updateCount();
+  }catch(e){}
+}
 document.querySelectorAll('.cl input').forEach(cb=>{
   try{if(localStorage.getItem(cb.id)==='1')cb.checked=true}catch(e){}
-  cb.addEventListener('change',()=>{try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}updateCount()});
+  cb.addEventListener('change',()=>{
+    try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}
+    updateCount();
+    if(shared)fetch('api/checks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:cb.id,done:cb.checked})}).catch(()=>{});
+  });
 });
 updateCount();
+loadShared();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadShared()});
+setInterval(()=>{if(!document.hidden)loadShared()},20000);
 
 let start=DAYS.find(d=>d.ymd===todayYmd)?.id;
 if(!start){try{start=localStorage.getItem('jejuTab2')}catch(e){}}

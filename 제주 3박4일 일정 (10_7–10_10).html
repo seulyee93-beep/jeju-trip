@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light only">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>제주 3박4일 일정 (10/7–10/10)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light only;
+  --bg:#F3F3F7; --card:#FFFFFF; --ink:#1C2033; --sub:#6B7088; --faint:#9A9DB3; --line:#ECEDF4;
+  --sea:#5B4FE8; --sea-soft:#EEECFD;
+  --tang:#E2701A; --tang-soft:#FFEEDD;
+  --warn:#C23E3E; --warn-soft:#FDEAEA;
+  --ok:#2F9E5C; --ok-soft:#E4F7EC;
+  --m-breakfast:#B7860B; --m-breakfast-bg:#FFF5D6;
+  --m-lunch:#D2600F; --m-lunch-bg:#FFEADB;
+  --m-dinner:#3C55A0; --m-dinner-bg:#E6EBFA;
+  --m-snack:#8452B3; --m-snack-bg:#F1E8FA;
+  --shadow:0 1px 2px rgba(28,32,51,.04), 0 6px 16px rgba(28,32,51,.06);
+  --shadow-sm:0 1px 2px rgba(28,32,51,.05);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 56px}
+
+/* header */
+header{padding:28px 2px 20px}
+h1{font-size:23px;font-weight:900;line-height:1.35;margin:0 0 4px;letter-spacing:-0.4px}
+.lede{color:var(--sub);font-size:14px;margin:0}
+.flights{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.flight{background:var(--card);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)}
+.flight .k{font-size:13px;color:var(--sub);font-weight:700}
+.flight .t{font-size:25px;font-weight:900;line-height:1.3;margin-top:3px;font-variant-numeric:tabular-nums;color:var(--sea)}
+.flight .d{font-size:13px;color:var(--sub);line-height:1.5;margin-top:3px}
+
+/* tabs */
+nav.tabs{position:sticky;top:0;z-index:10;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + 8px) 0 10px;margin:0 -16px;padding-left:16px;padding-right:16px}
+.tabrow{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.tab{border:0;background:var(--card);color:var(--ink);border-radius:14px;padding:9px 2px;font:inherit;cursor:pointer;text-align:center;box-shadow:var(--shadow-sm);transition:transform .15s ease}
+.tab b{display:block;font-size:15px;font-weight:800;line-height:1.3}
+.tab span{display:block;font-size:13px;color:var(--sub);line-height:1.3}
+.tab[aria-selected="true"]{background:var(--sea);box-shadow:0 4px 12px rgba(91,79,232,.35);color:#fff}
+.tab[aria-selected="true"] span{color:#fff;opacity:.85}
+.tab .today{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--tang);margin-left:3px;vertical-align:2px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--tang);outline-offset:2px}
+
+/* day head */
+.day{display:none}
+.day.on{display:block}
+.dayhead{background:linear-gradient(165deg,#24242B,#000);color:#fff;border-radius:22px;padding:20px 20px 18px;margin:10px 0 16px;box-shadow:0 10px 24px rgba(0,0,0,.28)}
+.dayhead .date{font-size:13px;font-weight:700;opacity:.85}
+.dayhead h2{font-size:21px;font-weight:900;line-height:1.4;margin:2px 0 12px;letter-spacing:-0.3px}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;font-size:13px;font-weight:700}
+.route span{background:rgba(255,255,255,.16);padding:3px 9px;border-radius:999px}
+.route i{font-style:normal;opacity:.7;padding:0 2px}
+.fc{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-top:12px}
+.fc div{background:rgba(255,255,255,.14);border-radius:12px;padding:8px 10px;line-height:1.35}
+.fc .lb{display:block;font-size:13px;opacity:.85}
+.fc .v{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:800}
+.fc .v em{font-style:normal;font-size:20px;line-height:1}
+.fc .v{flex-wrap:wrap;row-gap:0}.fc .v small{font-size:13px;font-weight:700;opacity:.85;white-space:nowrap}
+.fc .tp{font-size:16px;font-weight:900;white-space:nowrap}
+.fc .tp .lo{color:#BFE6FF}.fc .tp .hi{color:#FFD2B0}
+.fcnote{font-size:13px;opacity:.8;margin-top:6px}
+.wx{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.2);font-size:13px}
+.wx b{font-weight:800;margin-right:2px}
+.wx a{color:var(--sea);background:#fff;text-decoration:none;font-weight:800;padding:4px 11px;border-radius:999px;display:inline-flex;align-items:center;gap:4px}
+.wx a::after{content:"↗";font-size:13px;opacity:.7}
+.summary{margin:0 2px 14px;color:var(--sub);font-size:14px}
+
+/* notes */
+.note{display:flex;gap:11px;border-radius:16px;padding:13px 15px;margin:0 0 14px;font-size:14px;line-height:1.55;box-shadow:var(--shadow-sm)}
+.note .ic{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:900;color:#fff;margin-top:1px}
+.note b{display:block;font-size:15px;margin-bottom:1px}
+.note.warn{background:var(--warn-soft);color:#7a2424}.note.warn .ic{background:var(--warn)}
+.note.ok{background:var(--ok-soft);color:#1a5c37}.note.ok .ic{background:var(--ok)}
+
+/* stops */
+.stops{list-style:none;margin:0;padding:0}
+.stop{background:var(--card);border-radius:20px;padding:16px 17px;display:grid;grid-template-columns:40px 1fr;gap:13px;box-shadow:var(--shadow)}
+.stop .ico{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:19px;background:var(--sea-soft)}
+.stop.key .ico{background:var(--tang-soft)}
+.tmrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px}
+.stop .tm{font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.3;color:var(--sea);background:var(--sea-soft);padding:2px 9px;border-radius:999px}
+.stop.key .tm{color:var(--tang);background:var(--tang-soft)}
+.stop .tm.alt{font-size:13px;color:var(--faint);background:var(--bg);font-weight:700}
+.meal{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;line-height:1.5}
+.meal.breakfast{color:var(--m-breakfast);background:var(--m-breakfast-bg)}
+.meal.lunch{color:var(--m-lunch);background:var(--m-lunch-bg)}
+.meal.dinner{color:var(--m-dinner);background:var(--m-dinner-bg)}
+.meal.snack{color:var(--m-snack);background:var(--m-snack-bg)}
+.stop h3{font-size:17px;font-weight:800;margin:0;line-height:1.4}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.chip{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;line-height:1.5}
+.chip.check{color:var(--warn);background:var(--warn-soft)}
+.chip.baby{color:var(--sea);background:var(--sea-soft)}
+.chip.flight{color:var(--sub);background:var(--bg)}
+.stop p{margin:7px 0 0;font-size:14px;color:var(--sub);line-height:1.6}
+.addr{display:flex;align-items:center;gap:8px;margin-top:9px;font-size:13px;color:var(--sub)}
+.addr a{flex:none;color:var(--sea);font-weight:800;text-decoration:none;background:var(--sea-soft);padding:4px 11px;border-radius:999px}
+.addr span{min-width:0}
+.move{display:flex;align-items:center;gap:10px;padding:10px 4px 10px 13px;font-size:13px;color:var(--faint);font-weight:700;position:relative}
+.move::before{content:"";position:absolute;left:19px;top:0;bottom:0;border-left:2px dotted #D3D5E6}
+.move svg{flex:none;position:relative;background:var(--bg);z-index:1}
+.gap{height:10px}
+
+/* checklist */
+.ckgroup{background:var(--card);border-radius:20px;padding:8px 17px 6px;margin-bottom:14px;box-shadow:var(--shadow)}
+.ckgroup h3{font-size:16px;font-weight:900;margin:13px 0 5px;display:flex;justify-content:space-between;align-items:baseline}
+.ckgroup h3 small{font-size:13px;color:var(--faint);font-weight:700}
+.cl{list-style:none;margin:0;padding:0}
+.cl li{border-top:1px solid var(--line)}
+.cl li:first-child{border-top:0}
+.cl label{display:flex;gap:12px;align-items:flex-start;padding:12px 0;font-size:14px;cursor:pointer;line-height:1.55}
+.cl input{appearance:none;-webkit-appearance:none;width:22px;height:22px;margin:0;flex:none;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;transition:all .15s ease}
+.cl input:checked{background:var(--sea);border-color:var(--sea)}
+.cl input:checked::after{content:"";width:6px;height:10px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.cl input:checked + span{color:var(--faint);text-decoration:line-through}
+footer{margin-top:28px;color:var(--faint);font-size:13px;text-align:center}
+@media (max-width:380px){.stop{grid-template-columns:36px 1fr;padding:14px 14px}.tab b{font-size:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>11개월 아기와 제주 3박 4일</h1>
+  <p class="lede">신화월드리조트 3박 · 렌터카 · 이유식은 집에서 준비</p>
+  <div class="flights">
+    <div class="flight"><div class="k">10/7 수 · 가는 편</div><div class="t">13:20</div><div class="d">7C123 · 제주 도착 약 14:30<br>가족 도착 14:45</div></div>
+    <div class="flight"><div class="k">10/10 토 · 오는 편</div><div class="t">11:55</div><div class="d">RS904 · 제주 → 김포<br>가족도 같은 11:55 출발</div></div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="날짜 선택">
+  <div class="tabrow" role="tablist" id="tabrow"></div>
+</nav>
+
+<main id="days"></main>
+
+<footer>이동 시간은 평소 기준 추정치예요. 연휴 교통상황에 따라 출발 전 내비게이션으로 다시 확인하세요.</footer>
+</div>
+
+<script>
+const CAR='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff" stroke="#C6D2D1"/><path d="M7 14.5h10M8 14.5l1.2-3.3a1 1 0 0 1 .9-.7h3.8a1 1 0 0 1 .9.7l1.2 3.3v1.8H8z" fill="none" stroke="#8A9799" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+
+const DAYS=[
+{id:'day1',w:{am:['맑음',10],pm:['맑음',10],lo:18,hi:24},wx:[['제주시','제주시 날씨'],['신화월드','서귀포 안덕면 날씨']],tab:'1일차',date:'10/7 수',ymd:'2026-10-07',
+ title:'도착해서 늦은 점심 먹고 신화월드로',
+ route:['김포','제주공항','하귀','신화월드'],
+ summary:'가족과 공항에서 만나 함께 움직여요. 첫 끼가 오후 4시 가까이 돼서야 시작되니 아기 점심 이유식은 기내나 공항에서 먼저 먹여요.',
+ notes:[{type:'ok',title:'점심 영업시간 확인 완료',text:'문동일고사리육개장 라스트오더 16:30. 렌터카 인수가 밀려도 16:15 전에는 들어가야 해요.'}],
+ items:[
+  {t:'11:50',h:'김포공항 도착',p:'아기 동반이면 출발 1시간 반 전 도착을 권해요. 이유식은 기내 반입 가능하지만 보안검색에서 따로 보여달라고 할 수 있어요.'},
+  {t:'13:20',h:'김포 출발',key:1,chips:[['flight','7C123']],p:'이착륙 때 젖병이나 쪽쪽이를 물리면 귀 압력에 도움이 돼요.'},
+  {t:'14:30',h:'제주공항 도착',p:'짐 찾고 기다리는 동안 기저귀 교체, 수유실 이용.'},
+  {t:'14:45',h:'가족 도착, 합류',p:'함께 렌터카 셔틀 탑승장으로 이동해요.'},
+  {t:'15:15',h:'렌터카 인수',chips:[['check','업체 미정']],p:'카시트 장착 상태를 확인하고 출발하세요. 성인 4명에 카시트면 7인승이나 넉넉한 SUV가 나아요.'},
+  {move:'약 20분 · 하귀동으로'},
+  {t:'15:45',h:'문동일고사리육개장',key:1,meal:['lunch','늦은점심'],addr:'제주 제주시 하귀동남4길 13-1',map:'문동일고사리육개장',p:'라스트오더 16:30. 고사리를 넣고 걸쭉하게 끓이는 제주식 육개장이에요.'},
+  {move:'약 50분 · 평화로 타고 신화월드로'},
+  {t:'17:20',h:'신화월드 체크인',key:1,map:'제주신화월드',p:'짐만 두고 바로 저녁 먹으러 나가요. 아기 저녁 이유식은 식당에서 먹여요.'},
+  {t:'17:50',h:'바다제주한상 신화월드점',meal:['dinner','저녁'],chips:[['check','아기의자·대기 확인']],map:'바다제주한상 신화월드점',p:'점심이 늦었으니 양 조절해서 먹어요. 일찍 가는 만큼 대기가 적을 수 있어요.'}
+ ]},
+{id:'day2',w:{am:['맑음',10],pm:['맑음',10],lo:18,hi:24},wx:[['애월·한림','제주 애월읍 날씨'],['신화월드','서귀포 안덕면 날씨']],tab:'2일차',date:'10/8 목',ymd:'2026-10-08',
+ title:'오전은 리조트, 오후는 공항 픽업 후 목장 코스',
+ route:['신화월드','제주공항','양떼목장','이시돌목장','사계','신화월드'],
+ summary:'점심까지 신화월드 안에서 보내고 13:30에 나가요. 이동이 많은 날이라 아기 낮잠은 짧게 재우고 차 안에서 보충해요.',
+ notes:[{type:'warn',title:'워터파크 운영 확인',text:'야외 워터파크는 시즌제라 10월 초 운영이 확실하지 않아요. 닫혀 있으면 실내 수영장으로 대체하고, 영아 방수 기저귀 규정도 확인하세요.'}],
+ items:[
+  {t:'07:30',h:'조식',meal:['breakfast','아침']},
+  {t:'09:30',h:'워터파크 또는 실내 수영장',key:1,chips:[['baby','물놀이']],p:'아기는 30~40분이면 충분해요. 오래 있으면 체온이 떨어져요.'},
+  {t:'12:00',h:'신화월드 안에서 점심',meal:['lunch','점심']},
+  {t:'12:30',h:'숙소에서 아기 낮잠',p:'출발이 13:30이라 짧게 재우고, 모자라면 이동 중 차 안에서 마저 자요.'},
+  {move:'13:30 출발 · 제주공항까지 약 50분'},
+  {t:'14:20',h:'제주공항에서 가족 픽업',key:1,chips:[['check','도착시간 확인']],p:'가족 항공편 도착 시간에 맞춰 출발 시간을 조정하세요.'},
+  {move:'약 35분 · 애월 도치돌길로'},
+  {t:'15:00',h:'제주양떼목장',key:1,chips:[['baby','동물'],['check','17:00 마감']],addr:'제주 제주시 애월읍 도치돌길 289-13',map:'제주양떼목장',p:'양 먹이주기를 구경하고 초원을 가볍게 산책해요. 아기띠나 유모차로 1시간 안팎. 동물을 만진 뒤엔 물티슈로 손을 닦아주세요.'},
+  {move:'약 20분 · 한림 금악동으로'},
+  {t:'16:20',h:'우유부단 제주성이시돌목장본점',meal:['snack','간식'],chips:[['check','영업시간 확인']],addr:'제주 제주시 한림읍 금악동길 38',map:'우유부단 성이시돌목장',p:'목장 풍경을 보며 아이스크림으로 쉬어가요. 아기는 준비한 간식으로.'},
+  {move:'약 25분 · 사계 방향으로'},
+  {t:'17:30',h:'사계전복 산방산본점',key:1,meal:['dinner','저녁'],chips:[['check','아기의자·대기 확인']],addr:'제주 서귀포시 안덕면 사계로 207 1층',map:'사계전복 산방산본점'},
+  {t:'19:00',h:'숙소 복귀',p:'신화월드까지 약 20분이에요.'}
+ ]},
+{id:'day3',w:{am:['맑음',10],pm:['구름조금',20],lo:18,hi:25},wx:[['한림·협재','제주 한림읍 날씨'],['신화월드','서귀포 안덕면 날씨']],tab:'3일차',date:'10/9 금 · 한글날',ymd:'2026-10-09',
+ title:'한림·협재에서 놀고, 오후는 숙소에서 쉬기',
+ route:['신화월드','한림공원','협재','신화월드'],
+ summary:'연휴가 시작되는 날이라 한림·협재가 붐빌 수 있어요. 오전 일찍 움직이고 오후엔 숙소에서 쉬어요.',
+ notes:[],
+ items:[
+  {t:'07:30',h:'조식',meal:['breakfast','아침']},
+  {move:'09:30 출발 · 한림까지 약 25분'},
+  {t:'10:00',h:'한림공원',key:1,chips:[['baby','산책']],addr:'제주 제주시 한림읍 한림로 300',map:'한림공원',p:'유모차나 아기띠로 둘러보기 좋아요. 1시간 반이면 충분하고, 아기가 지치면 일찍 나와도 돼요.'},
+  {move:'11:30 · 한림로 따라 짧게 이동'},
+  {t:'12:00',h:'난춘식당 고기국수 제주협재본점',key:1,meal:['lunch','점심'],chips:[['check','두 곳 중 택1']],addr:'제주 제주시 한림읍 한림로 496',map:'난춘식당 협재',p:'고기국수 한 그릇 메뉴라 아기 동반해도 빨리 먹기 좋아요.'},
+  {t:'또는',alt:1,h:'협재흑돼지더꽃돈본점',addr:'제주 제주시 한림읍 한림로 366',map:'협재흑돼지더꽃돈',p:'구워 먹는 동안 시간이 걸려요. 아기 의자와 웨이팅을 확인하세요.'},
+  {t:'13:15',h:'호텔샌드 카페',meal:['snack','카페'],chips:[['check','영업시간 확인']],addr:'제주 제주시 한림읍 한림로 339',map:'호텔샌드 카페',p:'점심 식당에서 가까워서 이동이 짧아요.'},
+  {move:'14:15 출발 · 신화월드까지 약 30분 (카시트 낮잠)'},
+  {t:'15:00',h:'숙소 휴식',key:1,chips:[['baby','낮잠']],p:'아기 낮잠 재우고 어른들도 교대로 쉬어요. 힘이 남으면 리조트 산책.'},
+  {t:'18:00',h:'신화회포차',key:1,meal:['dinner','저녁'],chips:[['check','영업시간·아기의자 확인']],map:'신화회포차',p:'아기 저녁 이유식은 미리 먹이거나 식당에서 데워 먹여요.'}
+ ]},
+{id:'day4',w:{am:['구름조금',20],pm:['구름조금',30],lo:19,hi:26},wx:[['신화월드','서귀포 안덕면 날씨'],['제주공항','제주시 날씨']],tab:'4일차',date:'10/10 토',ymd:'2026-10-10',
+ title:'조식 먹고 바로 공항',
+ route:['신화월드','렌터카 반납','제주공항'],
+ summary:'11:55 비행기 기준으로 거꾸로 계산했어요. 연휴 중간 토요일이라 렌터카 반납장이 붐빌 수 있어요.',
+ notes:[{type:'warn',title:'9시에는 출발해야 해요',text:'공항 근처 반납까지 약 1시간, 반납과 셔틀 20~30분, 아기 동반 수속 1시간. 전날 밤에 짐을 대부분 싸두세요.'}],
+ items:[
+  {t:'07:00',h:'기상, 마지막 짐 정리'},
+  {t:'07:30',h:'조식',key:1,meal:['breakfast','아침'],p:'조식당 오픈에 맞춰 바로 들어가세요. 아기 이유식도 여기서 먹여요.'},
+  {t:'08:45',h:'체크아웃'},
+  {move:'09:00 출발 · 평화로 경유 약 1시간'},
+  {t:'10:00',h:'렌터카 반납',p:'반납 전 주유 기준 확인. 셔틀로 공항 이동.'},
+  {t:'10:20',h:'제주공항 도착, 수속',p:'탑승 전 기저귀 교체하고 수유실 들르기.'},
+  {t:'11:55',h:'제주 출발',key:1,chips:[['flight','RS904']]}
+ ]}
+];
+
+const CHECK=[
+ {title:'예약·이동',items:[
+  ['k1','렌터카 예약: 카시트 포함, 2일차 공항 픽업 가족까지 다 탈 수 있는 차급인지'],
+  ['k2','렌터카 인수 위치와 셔틀 탑승장 (1일차 15:15), 반납 주유 기준 (4일차 10:00)'],
+  ['k3','가족 항공편 도착 시간 (2일차 제주공항 픽업, 14:20 기준)'],
+  ['k4','신화월드 워터파크 10월 운영 여부와 영아 입장 규정'],
+  ['k5','객실 전자레인지·전기포트 유무 (이유식 데우기용)'],
+  ['k6','조식당 오픈 시간 (2·3·4일차 07:30 입장 가능한지)']]},
+ {title:'식당·장소 영업',items:[
+  ['p1','1일차 문동일고사리육개장: 라스트오더 16:30, 16:15 전 입장'],
+  ['p2','1일차 바다제주한상 신화월드점: 영업시간, 아기 의자, 웨이팅'],
+  ['p3','2일차 제주양떼목장: 먹이주기 운영 여부 (17:00 마감)'],
+  ['p4','2일차 우유부단 성이시돌목장: 영업시간'],
+  ['p5','2일차 사계전복 산방산본점: 영업시간, 아기 의자, 웨이팅'],
+  ['p6','3일차 한림공원: 운영시간과 입장 마감 (연휴 포함)'],
+  ['p7','3일차 점심 두 곳: 영업시간, 브레이크타임, 아기 의자, 연휴 웨이팅'],
+  ['p8','3일차 호텔샌드 카페: 영업시간'],
+  ['p9','3일차 신화회포차: 영업시간, 아기 의자']]},
+ {title:'서류·성인 짐',items:[
+  ['doc1','성인 신분증, 운전면허증 (렌터카 인수용)'],
+  ['doc2','아기 월령 확인 서류 (건강보험증이나 등본 등, 항공사 안내 확인)'],
+  ['doc3','항공권, 렌터카·숙소 예약 내역 캡처'],
+  ['doc4','휴대폰 충전기와 보조배터리']]},
+ {title:'아기 짐',items:[
+  ['b1','레토르트 이유식 4일분 + 여유 2끼 (1일차 점심용은 가방 맨 위에)'],
+  ['b2','보온병, 이유식 스푼, 턱받이, 휴대용 그릇'],
+  ['b3','아기 간식 (차 이동 중, 목장에서)'],
+  ['b4','젖병·분유와 쪽쪽이 (이착륙 귀 압력 완화, 기내 가방에)'],
+  ['b5','기저귀 4일분 + 여유, 물티슈, 손소독제'],
+  ['b6','방수 기저귀, 아기 수영복, 수건 (2일차 물놀이)'],
+  ['b7','얇은 겉옷과 양말 (해안·목장 바람 대비)'],
+  ['b8','차 창문 햇빛가리개와 얇은 담요 (이동 중 낮잠)'],
+  ['b9','유모차, 아기띠, 상비약, 체온계']]}
+];
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const todayYmd=(()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
+
+const WXI={'맑음':'☀️','구름조금':'🌤️','구름많음':'⛅','흐림':'☁️','비':'🌧️'};
+function renderFc(w){if(!w)return'';const c=(lb,x)=>`<div><span class="lb">${lb}</span><span class="v"><em aria-hidden="true">${WXI[x[0]]||''}</em>${esc(x[0])}<small>☂ ${x[1]}%</small></span></div>`;
+return `<div class="fc">${c('오전',w.am)}${c('오후',w.pm)}<div><span class="lb">최저·최고</span><span class="tp"><span class="lo">${w.lo}°</span> / <span class="hi">${w.hi}°</span></span></div></div><div class="fcnote">네이버 '제주날씨' 주간예보 · 10/6 오전 기준</div>`}
+function renderDay(d){
+  let h=`<section class="day" id="${d.id}" role="tabpanel">
+  <div class="dayhead"><div class="date">${esc(d.date)}</div><h2>${esc(d.title)}</h2>
+  <div class="route">${d.route.map(r=>`<span>${esc(r)}</span>`).join('<i>›</i>')}</div>${renderFc(d.w)}${d.wx?`<div class="wx"><b>최신 예보</b>${d.wx.map(w=>`<a href="https://search.naver.com/search.naver?query=${encodeURIComponent(w[1])}" target="_blank" rel="noopener">${esc(w[0])}</a>`).join('')}</div>`:''}</div>
+  <p class="summary">${esc(d.summary)}</p>`;
+  d.notes.forEach(n=>{h+=`<div class="note ${n.type}"><span class="ic">${n.type==='ok'?'✓':'!'}</span><div><b>${esc(n.title)}</b>${esc(n.text)}</div></div>`});
+  h+='<ol class="stops">';
+  let prevStop=false;
+  d.items.forEach(it=>{
+    if(it.move){h+=`<li class="move">${CAR}<span>${esc(it.move)}</span></li>`;prevStop=false;return}
+    if(prevStop)h+='<li class="gap" aria-hidden="true"></li>';
+    const meal=it.meal?`<span class="meal ${it.meal[0]}">${esc(it.meal[1])}</span>`:'';
+    const chips=it.chips?`<div class="chips">${it.chips.map(c=>`<span class="chip ${c[0]}">${esc(c[1])}</span>`).join('')}</div>`:'';
+    const addr=(it.addr||it.map)?`<div class="addr">${it.map?`<a href="https://map.naver.com/p/search/${encodeURIComponent(it.map)}" target="_blank" rel="noopener">지도</a>`:''}<span>${esc(it.addr||'')}</span></div>`:'';
+    const MICON={breakfast:'🍳',lunch:'🍚',dinner:'🍽️',snack:'🍦'};
+    let icon='📍';
+    if(it.chips?.some(c=>c[0]==='flight'))icon='✈️';
+    else if(it.meal)icon=MICON[it.meal[0]]||'🍽️';
+    else if(it.chips?.some(c=>c[0]==='baby'))icon='🧸';
+    else if(/체크인|숙소|리조트/.test(it.h))icon='🏨';
+    else if(/반납|렌터카|인수/.test(it.h))icon='🚙';
+    h+=`<li class="stop${it.key?' key':''}"><div class="ico">${icon}</div>
+    <div><div class="tmrow"><span class="tm${it.alt?' alt':''}">${esc(it.t)}</span>${meal}</div><h3>${esc(it.h)}</h3>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
+    prevStop=true;
+  });
+  return h+'</ol></section>';
+}
+function renderCheck(){
+  let h=`<section class="day" id="check" role="tabpanel"><div class="dayhead"><div class="date">출발 전</div><h2>준비물과 확인할 것</h2><div class="route"><span id="ckcount"></span></div></div>`;
+  CHECK.forEach(g=>{
+    h+=`<div class="ckgroup"><h3>${esc(g.title)}<small data-g="${esc(g.title)}"></small></h3><ul class="cl">`;
+    g.items.forEach(([id,t])=>{h+=`<li><label><input type="checkbox" id="ck_${id}"><span>${esc(t)}</span></label></li>`});
+    h+='</ul></div>';
+  });
+  return h+'</section>';
+}
+
+const tabrow=document.getElementById('tabrow'),main=document.getElementById('days');
+main.innerHTML=DAYS.map(renderDay).join('')+renderCheck();
+tabrow.innerHTML=DAYS.map(d=>`<button class="tab" role="tab" data-day="${d.id}"><b>${d.tab}${d.ymd===todayYmd?'<span class="today" aria-label="오늘"></span>':''}</b><span>${d.date.split(' ·')[0]}</span></button>`).join('')+`<button class="tab" role="tab" data-day="check"><b>준비물</b><span>체크</span></button>`;
+
+function show(id){
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.day===id?'true':'false'));
+  document.querySelectorAll('.day').forEach(s=>s.classList.toggle('on',s.id===id));
+  try{localStorage.setItem('jejuTab2',id)}catch(e){}
+}
+tabrow.addEventListener('click',e=>{const b=e.target.closest('.tab');if(b){show(b.dataset.day);window.scrollTo({top:Math.min(window.scrollY,document.querySelector('nav.tabs').offsetTop),behavior:'auto'})}});
+
+function updateCount(){
+  const all=document.querySelectorAll('.cl input'),done=[...all].filter(c=>c.checked).length;
+  document.getElementById('ckcount').textContent=`${done} / ${all.length} 완료`;
+  document.querySelectorAll('.ckgroup').forEach(g=>{const c=g.querySelectorAll('input'),n=[...c].filter(x=>x.checked).length;g.querySelector('small').textContent=`${n}/${c.length}`});
+}
+document.querySelectorAll('.cl input').forEach(cb=>{
+  try{if(localStorage.getItem(cb.id)==='1')cb.checked=true}catch(e){}
+  cb.addEventListener('change',()=>{try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}updateCount()});
+});
+updateCount();
+
+let start=DAYS.find(d=>d.ymd===todayYmd)?.id;
+if(!start){try{start=localStorage.getItem('jejuTab2')}catch(e){}}
+show(document.getElementById(start||'')?start:'day1');
+</script>
+</body>
+</html>

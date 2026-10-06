@@ -115,8 +115,9 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .stop.now{background:var(--ok-soft);box-shadow:0 0 0 2px var(--ok),var(--shadow)}
 .stop.now .ico{background:#fff}
 .stop.now .tm{color:#fff;background:var(--ok)}
-.nowtag{display:none;font-size:12px;font-weight:800;color:#fff;background:var(--ok);padding:2px 8px;border-radius:999px;line-height:1.5}
-.stop.now .nowtag{display:inline-block}
+.stop{position:relative}
+.nowtag{display:none;position:absolute;top:-2px;right:16px;width:36px;padding:9px 0 17px;background:#EF4B5B;color:#fff;font-size:12px;font-weight:900;line-height:1.2;text-align:center;letter-spacing:-0.3px;clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%);filter:drop-shadow(0 2px 3px rgba(239,75,91,.3))}
+.stop.now .nowtag{display:block}
 
 /* checklist */
 .ckgroup{background:var(--card);border-radius:20px;padding:8px 17px 6px;margin-bottom:14px;box-shadow:var(--shadow)}
@@ -295,8 +296,8 @@ function renderDay(d){
     else if(/체크인|숙소|리조트/.test(it.h))icon='🏨';
     else if(/반납|렌터카|인수/.test(it.h))icon='🚙';
     const hm=/^(\d\d):(\d\d)$/.exec(it.t);if(hm)lastMin=+hm[1]*60+ +hm[2];
-    h+=`<li class="stop${it.key?' key':''}" data-min="${lastMin}"><div class="ico">${icon}</div>
-    <div><div class="tmrow"><span class="tm${it.alt?' alt':''}">${esc(it.t)}</span>${meal}<span class="nowtag">지금</span></div><h3>${esc(it.h)}</h3>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
+    h+=`<li class="stop${it.key?' key':''}" data-min="${lastMin}"><span class="nowtag">지금</span><div class="ico">${icon}</div>
+    <div><div class="tmrow"><span class="tm${it.alt?' alt':''}">${esc(it.t)}</span>${meal}</div><h3>${esc(it.h)}</h3>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
     prevStop=true;
   });
   return h+'</ol></section>';

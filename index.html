@@ -43,6 +43,9 @@ h1{font-size:24px;font-weight:700;line-height:1.38;margin:0 0 6px;color:var(--bl
 /* 구멍 뚫린 카드 */
 .card{position:relative;background:#fff;border-radius:20px;padding:36px 20px 20px;margin:0 0 28px;box-shadow:0 10px 0 -2px var(--stack)}
 .card::before{content:"";position:absolute;top:13px;left:50%;transform:translateX(-50%);width:154px;height:10px;background:radial-gradient(circle at 5px 5px,var(--hole) 4.5px,transparent 5px) 0 0/22px 10px repeat-x}
+/* 맨 위 항공편 카드만 스케치북 스타일 */
+.day .card{box-shadow:none;padding-top:22px}
+.day .card::before{display:none}
 .ct{display:flex;align-items:center;gap:6px;font-size:17px;font-weight:700;margin:0 0 14px}
 .ct small{margin-left:auto;font-size:14px;font-weight:600;color:var(--cap)}
 

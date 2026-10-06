@@ -28,6 +28,17 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 header{padding:36px 4px 20px}
 h1{font-size:24px;font-weight:700;line-height:1.38;margin:0 0 6px;color:var(--blue);letter-spacing:-0.5px}
 .lede{color:var(--sub);font-size:15px;margin:0}
+.hrow{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-bottom:6px}
+.hrow h1{margin:0}
+.ckbtn{flex:none;border:0;background:#fff;color:var(--blue);font:inherit;font-size:13px;font-weight:700;padding:8px 12px;border-radius:999px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04);margin-bottom:3px}
+.ckbtn[aria-pressed="true"]{background:var(--blue);color:#fff}
+.addrow{display:flex;gap:8px;margin-top:8px;padding-top:14px;border-top:1px solid var(--line)}
+.addrow input{flex:1;min-width:0;height:40px;border:1px solid #e5e8eb;border-radius:10px;padding:0 12px;font:inherit;font-size:16px;color:var(--ink);background:#f9fafb}
+.addrow input:focus{outline:none;border-color:var(--blue);background:#fff}
+.addrow .btn{height:40px;min-width:44px;font-size:22px;font-weight:500;border:0;cursor:pointer}
+.cl li.custom{display:flex;align-items:center;gap:8px}
+.cl li.custom label{flex:1;min-width:0}
+.del{flex:none;order:3;width:28px;height:28px;border:0;border-radius:50%;background:var(--line);color:var(--cap);font-size:15px;line-height:1;cursor:pointer}
 
 /* 구멍 뚫린 카드 */
 .card{position:relative;background:#fff;border-radius:20px;padding:36px 20px 20px;margin:0 0 28px;box-shadow:0 10px 0 -2px var(--stack)}
@@ -47,7 +58,7 @@ h1{font-size:24px;font-weight:700;line-height:1.38;margin:0 0 6px;color:var(--bl
 
 /* tabs */
 nav.tabs{position:sticky;top:0;z-index:10;background:rgba(233,241,253,.85);-webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px);padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 12px;margin:0 -16px 8px}
-.tabrow{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tabrow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .tab{border:0;background:#fff;color:var(--ink);border-radius:12px;padding:8px 2px;font:inherit;cursor:pointer;text-align:center;transition:transform .15s ease}
 .tab b{display:block;font-size:14px;font-weight:700;line-height:1.3}
 .tab span{display:block;font-size:12px;color:var(--cap);line-height:1.3}
@@ -142,7 +153,7 @@ footer{margin-top:24px;color:var(--cap);font-size:12px;line-height:1.6;text-alig
 <body>
 <div class="wrap">
 <header>
-  <h1>11개월 이수와 함께하는<br>제주 3박 4일 여행</h1>
+  <div class="hrow"><h1>11개월 이수와 함께하는<br>제주 3박 4일 여행</h1><button class="ckbtn" id="ckbtn" type="button" aria-pressed="false">🧳 이수 준비물 체크</button></div>
   <p class="lede" id="hdprog">신화월드리조트 3박 · 렌터카 · 이유식은 집에서 준비</p>
 </header>
 
@@ -327,24 +338,26 @@ function renderDay(d){
   return h+'</ol></div></section>';
 }
 function renderCheck(){
-  let h=`<section class="day" id="check" role="tabpanel"><div class="card head"><div class="ct">🧳 출발 전</div><h2>이수 짐 챙기기</h2><p class="summary" id="ckcount" style="margin:0"></p></div>`;
+  let h=`<section class="day" id="check" role="tabpanel"><div class="card head"><div class="ct">🧳 출발 전</div><h2>이수 준비물 체크</h2><p class="summary" id="ckcount" style="margin:0"></p></div>`;
   CHECK.forEach(g=>{
     h+=`<div class="card ckgroup"><div class="ct">👶 ${esc(g.title)}<small data-g="${esc(g.title)}"></small></div><ul class="cl">`;
     g.items.forEach(([id,t])=>{h+=`<li><label><input type="checkbox" id="ck_${id}"><span>${esc(t)}</span></label></li>`});
-    h+='</ul></div>';
+    h+=`</ul><form class="addrow" id="addform"><input id="addinput" maxlength="40" placeholder="준비물 직접 추가" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit" aria-label="준비물 추가">+</button></form></div>`;
   });
   return h+'</section>';
 }
 
 const tabrow=document.getElementById('tabrow'),main=document.getElementById('days');
 main.innerHTML=DAYS.map(renderDay).join('')+renderCheck();
-tabrow.innerHTML=DAYS.map(d=>`<button class="tab" role="tab" data-day="${d.id}"><b>${d.tab}${d.ymd===todayYmd?'<span class="today" aria-label="오늘"></span>':''}</b><span>${d.date.split(' ·')[0]}</span></button>`).join('')+`<button class="tab" role="tab" data-day="check"><b>준비물</b><span>체크</span></button>`;
+tabrow.innerHTML=DAYS.map(d=>`<button class="tab" role="tab" data-day="${d.id}"><b>${d.tab}${d.ymd===todayYmd?'<span class="today" aria-label="오늘"></span>':''}</b><span>${d.date.split(' ·')[0]}</span></button>`).join('');
 
 function show(id){
   document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.day===id?'true':'false'));
   document.querySelectorAll('.day').forEach(s=>s.classList.toggle('on',s.id===id));
+  document.getElementById('ckbtn').setAttribute('aria-pressed',id==='check'?'true':'false');
   try{localStorage.setItem('jejuTab2',id)}catch(e){}
 }
+document.getElementById('ckbtn').addEventListener('click',()=>{show('check');window.scrollTo({top:document.querySelector('nav.tabs').offsetTop,behavior:'smooth'})});
 tabrow.addEventListener('click',e=>{const b=e.target.closest('.tab');if(b){show(b.dataset.day);window.scrollTo({top:Math.min(window.scrollY,document.querySelector('nav.tabs').offsetTop),behavior:'auto'})}});
 
 function updateCount(){
@@ -355,23 +368,66 @@ function updateCount(){
 }
 // 서버(Turso)가 있으면 가족 모두와 공유, 없으면(GitHub Pages 등) 이 기기에만 저장
 let shared=false;
+const CL=document.querySelector('#check .cl');
+function restore(cb){try{if(localStorage.getItem(cb.id)==='1')cb.checked=true}catch(e){}}
+CL.querySelectorAll('input').forEach(restore);
+CL.addEventListener('change',e=>{
+  const cb=e.target;if(!cb.matches('input[type=checkbox]'))return;
+  try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}
+  updateCount();
+  if(shared)fetch('api/checks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:cb.id,done:cb.checked})}).catch(()=>{});
+});
+
+// 직접 추가한 준비물
+let customItems=[];
+try{customItems=JSON.parse(localStorage.getItem('jejuCustom')||'[]')}catch(e){}
+const saveCustom=()=>{try{localStorage.setItem('jejuCustom',JSON.stringify(customItems))}catch(e){}};
+function renderCustom(){
+  const keep={};CL.querySelectorAll('li.custom input').forEach(cb=>keep[cb.id]=cb.checked);
+  CL.querySelectorAll('li.custom').forEach(li=>li.remove());
+  customItems.forEach(it=>{
+    const li=document.createElement('li');li.className='custom';
+    li.innerHTML=`<label><input type="checkbox" id="ck_${esc(it.id)}"><span>${esc(it.label)}</span></label><button class="del" type="button" data-id="${esc(it.id)}" aria-label="${esc(it.label)} 삭제">×</button>`;
+    CL.appendChild(li);
+    const cb=li.querySelector('input');
+    if(cb.id in keep)cb.checked=keep[cb.id];else restore(cb);
+  });
+  updateCount();
+}
+renderCustom();
+document.getElementById('addform').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const inp=document.getElementById('addinput'),label=inp.value.trim();
+  if(!label)return;
+  inp.value='';
+  let item={id:'u'+Math.random().toString(36).slice(2,10),label};
+  if(shared){
+    try{const r=await fetch('api/items',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({label})});if(r.ok)item=await r.json()}catch(e){}
+  }
+  customItems.push(item);saveCustom();renderCustom();
+});
+CL.addEventListener('click',async e=>{
+  const b=e.target.closest('.del');if(!b)return;
+  const it=customItems.find(x=>x.id===b.dataset.id);if(!it)return;
+  if(!confirm(`'${it.label}' 항목을 지울까요?`))return;
+  customItems=customItems.filter(x=>x!==it);saveCustom();
+  try{localStorage.removeItem('ck_'+it.id)}catch(e){}
+  renderCustom();
+  if(shared)fetch('api/items?id='+encodeURIComponent(it.id),{method:'DELETE'}).catch(()=>{});
+});
+
 async function loadShared(){
   try{
+    const ri=await fetch('api/items',{cache:'no-store'});
+    if(!ri.ok||!(ri.headers.get('content-type')||'').includes('json'))return;
+    customItems=await ri.json();saveCustom();shared=true;renderCustom();
     const r=await fetch('api/checks',{cache:'no-store'});
-    if(!r.ok||!(r.headers.get('content-type')||'').includes('json'))return;
-    const data=await r.json();shared=true;
-    document.querySelectorAll('.cl input').forEach(cb=>{if(cb.id in data){cb.checked=data[cb.id]===1;try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}}});
+    if(!r.ok)return;
+    const data=await r.json();
+    CL.querySelectorAll('input').forEach(cb=>{if(cb.id in data){cb.checked=data[cb.id]===1;try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}}});
     updateCount();
   }catch(e){}
 }
-document.querySelectorAll('.cl input').forEach(cb=>{
-  try{if(localStorage.getItem(cb.id)==='1')cb.checked=true}catch(e){}
-  cb.addEventListener('change',()=>{
-    try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}
-    updateCount();
-    if(shared)fetch('api/checks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:cb.id,done:cb.checked})}).catch(()=>{});
-  });
-});
 updateCount();
 loadShared();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadShared()});

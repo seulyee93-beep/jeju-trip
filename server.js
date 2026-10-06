@@ -10,6 +10,7 @@ const INDEX = path.join(__dirname, 'index.html');
 
 // Turso 설정이 없으면 메모리에만 저장 (로컬 테스트용)
 const memory = new Map();
+const memoryItems = [];
 
 async function turso(statements) {
   const res = await fetch(`${TURSO_URL}/v2/pipeline`, {
@@ -35,7 +36,10 @@ async function turso(statements) {
 let ready = null;
 function init() {
   if (!TURSO_URL) return Promise.resolve();
-  ready = ready || turso([['CREATE TABLE IF NOT EXISTS checks (id TEXT PRIMARY KEY, done INTEGER NOT NULL, updated_at TEXT NOT NULL)']]);
+  ready = ready || turso([
+    ['CREATE TABLE IF NOT EXISTS checks (id TEXT PRIMARY KEY, done INTEGER NOT NULL, updated_at TEXT NOT NULL)'],
+    ['CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY, label TEXT NOT NULL, created_at TEXT NOT NULL)'],
+  ]);
   return ready;
 }
 
@@ -53,6 +57,33 @@ async function setCheck(id, done) {
     'INSERT INTO checks (id, done, updated_at) VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET done = excluded.done, updated_at = excluded.updated_at',
     [id, done, new Date().toISOString()],
   ]]);
+}
+
+// 직접 추가한 준비물
+async function getItems() {
+  if (!TURSO_URL) return memoryItems.slice();
+  await init();
+  const [result] = await turso([['SELECT id, label FROM items ORDER BY created_at']]);
+  return result.rows.map(([id, label]) => ({ id: id.value, label: label.value }));
+}
+
+async function addItem(label) {
+  const item = { id: 'u' + Math.random().toString(36).slice(2, 10), label };
+  if (!TURSO_URL) { memoryItems.push(item); return item; }
+  await init();
+  await turso([['INSERT INTO items (id, label, created_at) VALUES (?, ?, ?)', [item.id, label, new Date().toISOString()]]]);
+  return item;
+}
+
+async function deleteItem(id) {
+  if (!TURSO_URL) {
+    const i = memoryItems.findIndex(x => x.id === id);
+    if (i >= 0) memoryItems.splice(i, 1);
+    memory.delete(`ck_${id}`);
+    return;
+  }
+  await init();
+  await turso([['DELETE FROM items WHERE id = ?', [id]], ['DELETE FROM checks WHERE id = ?', [`ck_${id}`]]]);
 }
 
 function send(res, status, body, type = 'application/json; charset=utf-8') {
@@ -77,6 +108,18 @@ http.createServer(async (req, res) => {
       const { id, done } = await readBody(req);
       if (typeof id !== 'string' || !/^ck_[a-z0-9]{1,20}$/.test(id)) return send(res, 400, { error: 'bad id' });
       await setCheck(id, done ? 1 : 0);
+      return send(res, 200, { ok: true });
+    }
+    if (url.pathname === '/api/items' && req.method === 'GET') return send(res, 200, await getItems());
+    if (url.pathname === '/api/items' && req.method === 'POST') {
+      const label = String((await readBody(req)).label || '').trim();
+      if (!label || label.length > 40) return send(res, 400, { error: 'bad label' });
+      return send(res, 200, await addItem(label));
+    }
+    if (url.pathname === '/api/items' && req.method === 'DELETE') {
+      const id = url.searchParams.get('id') || '';
+      if (!/^u[a-z0-9]{1,12}$/.test(id)) return send(res, 400, { error: 'bad id' });
+      await deleteItem(id);
       return send(res, 200, { ok: true });
     }
     if (url.pathname === '/healthz') return send(res, 200, { ok: true });

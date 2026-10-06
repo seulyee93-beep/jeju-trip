@@ -80,10 +80,12 @@ nav.tabs{position:sticky;top:0;z-index:10;background:rgba(233,241,253,.85);-webk
 .note.ok .ico{background:var(--blue)}
 
 /* 일정: 타임라인 */
-.prog{font-size:14px;color:var(--sub);margin:-6px 0 18px}
+.tl{background:#fff;margin:0 -16px 28px;padding:28px 14px 16px 6px;border-radius:28px}
+.tlh{font-size:24px;font-weight:700;letter-spacing:-0.6px;margin:0 0 4px 10px}
+.prog{font-size:15px;color:var(--sub);margin:0 0 22px 10px}
 .prog b{color:var(--blue)}
 .stops{list-style:none;margin:0;padding:0}
-.stops > li{display:grid;grid-template-columns:44px 1fr;gap:10px}
+.stops > li{display:grid;grid-template-columns:46px 1fr;gap:6px}
 .rail{display:flex;flex-direction:column;align-items:center}
 .rail .t{font-size:12px;font-weight:600;color:var(--cap);font-variant-numeric:tabular-nums;line-height:1.2;padding-top:16px;white-space:nowrap}
 .rail .t.alt{font-weight:500}
@@ -295,7 +297,7 @@ function renderDay(d){
   const uniq=[...new Set(starts)];
   const fmt=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
   const total=d.items.filter(it=>!it.move&&!it.alt).length;
-  h+=`<div class="card"><div class="ct">🗓️ 하루 일정</div><p class="prog" id="prog-${d.id}">${total}개 일정 중 <b>0</b>개 완료</p><ol class="stops">`;
+  h+=`<div class="tl"><h3 class="tlh">하루 일정</h3><p class="prog" id="prog-${d.id}">${total}개 일정 중 <b>0</b>개 완료</p><ol class="stops">`;
   let prevStop=false,idx=0;
   d.items.forEach(it=>{
     if(it.move){h+=`<li class="move" data-move="1"><div class="rail"><div class="dots"></div></div><div class="mv">${CAR}<span>${esc(it.move)}</span></div></li>`;prevStop=false;return}

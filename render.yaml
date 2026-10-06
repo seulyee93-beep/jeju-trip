@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: jeju-trip
+    runtime: static
+    buildCommand: echo "no build step"
+    staticPublishPath: .

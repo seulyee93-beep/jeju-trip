@@ -156,8 +156,8 @@ footer{margin-top:24px;color:var(--cap);font-size:12px;line-height:1.6;text-alig
 <body>
 <div class="wrap">
 <header>
-  <div class="hrow"><h1>친구 셋이 떠나는<br>부산 1박 2일 여행</h1><button class="ckbtn" id="ckbtn" type="button" aria-pressed="false">🧳 준비물 체크</button></div>
-  <p class="lede" id="hdprog">KTX 왕복 · 3명 · 광안리 숙소 · 비 와도 실내 위주</p>
+  <div class="hrow"><h1>친구 셋이 떠나는<br>부산 1박 2일 여행</h1></div>
+  <p class="lede">KTX 왕복 · 3명 · 광안리 숙소 · 비 와도 실내 위주</p>
 </header>
 
 <section class="card">
@@ -221,20 +221,6 @@ const DAYS=[
  ]}
 ];
 
-const CHECK=[
- {title:'챙길 것',items:[
-  ['bs1','신분증'],
-  ['bs2','KTX 승차권 (코레일톡 · 왕복)'],
-  ['bs3','숙소 예약 확인 (광안리)'],
-  ['bs4','우산 또는 우비'],
-  ['bs5','젖어도 되는 신발'],
-  ['bs6','얇은 겉옷 (저녁 쌀쌀)'],
-  ['bs7','갈아입을 옷 · 속옷 (스파랜드용 포함)'],
-  ['bs8','세면도구 · 화장품'],
-  ['bs9','충전기 · 보조배터리'],
-  ['bs10','상비약'],
-  ['bs11','교통카드 (지하철·버스)']]}
-];
 
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 // ?now=2026-10-07T15:50 으로 특정 시각을 미리 볼 수 있어요
@@ -287,105 +273,22 @@ function renderDay(d){
   });
   return h+'</ol></div></section>';
 }
-function renderCheck(){
-  let h=`<section class="day" id="check" role="tabpanel"><div class="card head"><div class="ct">🧳 출발 전</div><h2>부산 준비물 체크</h2><p class="summary" id="ckcount" style="margin:0"></p></div>`;
-  CHECK.forEach(g=>{
-    h+=`<div class="card ckgroup"><div class="ct">🎒 ${esc(g.title)}<small data-g="${esc(g.title)}"></small></div><ul class="cl">`;
-    g.items.forEach(([id,t])=>{h+=`<li><label><input type="checkbox" id="ck_${id}"><span>${esc(t)}</span></label></li>`});
-    h+=`</ul><form class="addrow" id="addform"><input id="addinput" maxlength="40" placeholder="준비물 직접 추가" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit" aria-label="준비물 추가">+</button></form></div>`;
-  });
-  return h+'</section>';
-}
 
 const tabrow=document.getElementById('tabrow'),main=document.getElementById('days');
-main.innerHTML=DAYS.map(renderDay).join('')+renderCheck();
+main.innerHTML=DAYS.map(renderDay).join('');
 tabrow.innerHTML=DAYS.map(d=>`<button class="tab" role="tab" data-day="${d.id}"><b>${d.tab}${d.ymd===todayYmd?'<span class="today" aria-label="오늘"></span>':''}</b><span>${d.date.split(' ·')[0]}</span></button>`).join('');
 
 function show(id){
   document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.day===id?'true':'false'));
   document.querySelectorAll('.day').forEach(s=>s.classList.toggle('on',s.id===id));
-  document.getElementById('ckbtn').setAttribute('aria-pressed',id==='check'?'true':'false');
   try{localStorage.setItem('busanTab',id)}catch(e){}
 }
-document.getElementById('ckbtn').addEventListener('click',()=>{show('check');window.scrollTo({top:document.querySelector('nav.tabs').offsetTop,behavior:'smooth'})});
 tabrow.addEventListener('click',e=>{const b=e.target.closest('.tab');if(b){show(b.dataset.day);window.scrollTo({top:Math.min(window.scrollY,document.querySelector('nav.tabs').offsetTop),behavior:'auto'})}});
 
-function updateCount(){
-  const all=document.querySelectorAll('.cl input'),done=[...all].filter(c=>c.checked).length;
-  document.getElementById('ckcount').textContent=done===all.length?'모든 짐을 다 챙겼어요!':done?`벌써 ${done}가지를 챙겼어요. ${all.length-done}가지 남았어요.`:`${all.length}가지를 챙겨야 해요.`;
-  document.getElementById('hdprog').textContent=done?`우와! 벌써 ${done}가지 짐을 챙겼어요.`:'KTX 왕복 · 3명 · 광안리 숙소 · 비 와도 실내 위주';
-  document.querySelectorAll('.ckgroup').forEach(g=>{const c=g.querySelectorAll('.cl input'),n=[...c].filter(x=>x.checked).length;g.querySelector('small').textContent=`${n}/${c.length}`});
-}
-// 서버(Turso)가 있으면 가족 모두와 공유, 없으면(GitHub Pages 등) 이 기기에만 저장
-let shared=false;
-const CL=document.querySelector('#check .cl');
-function restore(cb){try{if(localStorage.getItem(cb.id)==='1')cb.checked=true}catch(e){}}
-CL.querySelectorAll('input').forEach(restore);
-CL.addEventListener('change',e=>{
-  const cb=e.target;if(!cb.matches('input[type=checkbox]'))return;
-  try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}
-  updateCount();
-  if(shared)fetch('api/checks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:cb.id,done:cb.checked})}).catch(()=>{});
-});
-
-// 직접 추가한 준비물
-let customItems=[];
-try{customItems=JSON.parse(localStorage.getItem('busanCustom')||'[]')}catch(e){}
-const saveCustom=()=>{try{localStorage.setItem('busanCustom',JSON.stringify(customItems))}catch(e){}};
-function renderCustom(){
-  const keep={};CL.querySelectorAll('li.custom input').forEach(cb=>keep[cb.id]=cb.checked);
-  CL.querySelectorAll('li.custom').forEach(li=>li.remove());
-  customItems.forEach(it=>{
-    const li=document.createElement('li');li.className='custom';
-    li.innerHTML=`<label><input type="checkbox" id="ck_${esc(it.id)}"><span>${esc(it.label)}</span></label><button class="del" type="button" data-id="${esc(it.id)}" aria-label="${esc(it.label)} 삭제">×</button>`;
-    CL.appendChild(li);
-    const cb=li.querySelector('input');
-    if(cb.id in keep)cb.checked=keep[cb.id];else restore(cb);
-  });
-  updateCount();
-}
-renderCustom();
-document.getElementById('addform').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const inp=document.getElementById('addinput'),label=inp.value.trim();
-  if(!label)return;
-  inp.value='';
-  let item={id:'bc'+Math.random().toString(36).slice(2,10),label};
-  if(shared){
-    try{const r=await fetch('api/items?trip=busan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({label})});if(r.ok)item=await r.json()}catch(e){}
-  }
-  customItems.push(item);saveCustom();renderCustom();
-});
-CL.addEventListener('click',async e=>{
-  const b=e.target.closest('.del');if(!b)return;
-  const it=customItems.find(x=>x.id===b.dataset.id);if(!it)return;
-  if(!confirm(`'${it.label}' 항목을 지울까요?`))return;
-  customItems=customItems.filter(x=>x!==it);saveCustom();
-  try{localStorage.removeItem('ck_'+it.id)}catch(e){}
-  renderCustom();
-  if(shared)fetch('api/items?trip=busan&id='+encodeURIComponent(it.id),{method:'DELETE'}).catch(()=>{});
-});
-
-async function loadShared(){
-  try{
-    const ri=await fetch('api/items?trip=busan',{cache:'no-store'});
-    if(!ri.ok||!(ri.headers.get('content-type')||'').includes('json'))return;
-    customItems=await ri.json();saveCustom();shared=true;renderCustom();
-    const r=await fetch('api/checks',{cache:'no-store'});
-    if(!r.ok)return;
-    const data=await r.json();
-    CL.querySelectorAll('input').forEach(cb=>{if(cb.id in data){cb.checked=data[cb.id]===1;try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}}});
-    updateCount();
-  }catch(e){}
-}
-updateCount();
-loadShared();
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadShared()});
-setInterval(()=>{if(!document.hidden)loadShared()},20000);
 
 let start=DAYS.find(d=>d.ymd===todayYmd)?.id;
 if(!start){try{start=localStorage.getItem('busanTab')}catch(e){}}
-show(document.getElementById(start||'')?start:'day1');
+show(document.getElementById(start||'')&&start!=='check'?start:'day1');
 
 // 오늘 일정에서 지금 시간에 해당하는 항목을 강조하고 지난 항목은 흐리게
 function markNow(){

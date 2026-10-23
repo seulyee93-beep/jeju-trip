@@ -7,6 +7,9 @@ const PORT = process.env.PORT || 3000;
 const TURSO_URL = (process.env.TURSO_URL || '').replace(/^libsql:\/\//, 'https://').replace(/\/$/, '');
 const TURSO_TOKEN = process.env.TURSO_TOKEN || '';
 const INDEX = path.join(__dirname, 'index.html');
+const BUSAN = path.join(__dirname, 'busan.html');
+// 여행별 직접 추가 준비물 id 접두사 (제주: u, 부산: bc)
+const PREFIX = { jeju: 'u', busan: 'bc' };
 
 // Turso 설정이 없으면 메모리에만 저장 (로컬 테스트용)
 const memory = new Map();
@@ -60,15 +63,16 @@ async function setCheck(id, done) {
 }
 
 // 직접 추가한 준비물
-async function getItems() {
-  if (!TURSO_URL) return memoryItems.slice();
+async function getItems(prefix) {
+  const mine = x => x.id.startsWith(prefix) && (prefix !== 'u' || !x.id.startsWith('bc'));
+  if (!TURSO_URL) return memoryItems.filter(mine);
   await init();
   const [result] = await turso([['SELECT id, label FROM items ORDER BY created_at']]);
-  return result.rows.map(([id, label]) => ({ id: id.value, label: label.value }));
+  return result.rows.map(([id, label]) => ({ id: id.value, label: label.value })).filter(mine);
 }
 
-async function addItem(label) {
-  const item = { id: 'u' + Math.random().toString(36).slice(2, 10), label };
+async function addItem(label, prefix) {
+  const item = { id: prefix + Math.random().toString(36).slice(2, 10), label };
   if (!TURSO_URL) { memoryItems.push(item); return item; }
   await init();
   await turso([['INSERT INTO items (id, label, created_at) VALUES (?, ?, ?)', [item.id, label, new Date().toISOString()]]]);
@@ -102,6 +106,7 @@ function readBody(req) {
 
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
+  const prefix = PREFIX[url.searchParams.get('trip')] || PREFIX.jeju;
   try {
     if (url.pathname === '/api/checks' && req.method === 'GET') return send(res, 200, await getChecks());
     if (url.pathname === '/api/checks' && req.method === 'POST') {
@@ -110,17 +115,20 @@ http.createServer(async (req, res) => {
       await setCheck(id, done ? 1 : 0);
       return send(res, 200, { ok: true });
     }
-    if (url.pathname === '/api/items' && req.method === 'GET') return send(res, 200, await getItems());
+    if (url.pathname === '/api/items' && req.method === 'GET') return send(res, 200, await getItems(prefix));
     if (url.pathname === '/api/items' && req.method === 'POST') {
       const label = String((await readBody(req)).label || '').trim();
       if (!label || label.length > 40) return send(res, 400, { error: 'bad label' });
-      return send(res, 200, await addItem(label));
+      return send(res, 200, await addItem(label, prefix));
     }
     if (url.pathname === '/api/items' && req.method === 'DELETE') {
       const id = url.searchParams.get('id') || '';
-      if (!/^u[a-z0-9]{1,12}$/.test(id)) return send(res, 400, { error: 'bad id' });
+      if (!id.startsWith(prefix) || !/^[a-z0-9]{2,14}$/.test(id)) return send(res, 400, { error: 'bad id' });
       await deleteItem(id);
       return send(res, 200, { ok: true });
+    }
+    if (req.method === 'GET' && (url.pathname === '/busan' || url.pathname === '/busan.html')) {
+      return send(res, 200, fs.readFileSync(BUSAN, 'utf8'), 'text/html; charset=utf-8');
     }
     if (url.pathname === '/healthz') return send(res, 200, { ok: true });
     if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {

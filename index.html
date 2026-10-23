@@ -367,7 +367,7 @@ function updateCount(){
   const all=document.querySelectorAll('.cl input'),done=[...all].filter(c=>c.checked).length;
   document.getElementById('ckcount').textContent=done===all.length?'모든 짐을 다 챙겼어요!':done?`벌써 ${done}가지를 챙겼어요. ${all.length-done}가지 남았어요.`:`${all.length}가지를 챙겨야 해요.`;
   document.getElementById('hdprog').textContent=done?`우와! 벌써 ${done}가지 짐을 챙겼어요.`:'신화월드리조트 3박 · 렌터카 · 이유식은 집에서 준비';
-  document.querySelectorAll('.ckgroup').forEach(g=>{const c=g.querySelectorAll('input'),n=[...c].filter(x=>x.checked).length;g.querySelector('small').textContent=`${n}/${c.length}`});
+  document.querySelectorAll('.ckgroup').forEach(g=>{const c=g.querySelectorAll('.cl input'),n=[...c].filter(x=>x.checked).length;g.querySelector('small').textContent=`${n}/${c.length}`});
 }
 // 서버(Turso)가 있으면 가족 모두와 공유, 없으면(GitHub Pages 등) 이 기기에만 저장
 let shared=false;

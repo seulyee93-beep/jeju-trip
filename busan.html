@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light only">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>부산 1박 2일 (10/24–10/25)</title>
+<style>
+/* 토스 준비 리스트 스타일 */
+:root{
+  color-scheme:light only;
+  --blue:#3182f6; --blue-soft:#e8f3ff; --red:#f04452;
+  --ink:#191f28; --sub:#4e5968; --cap:#8b95a1; --line:#f2f4f6; --ico:#f2f4f6;
+  --bg:#e9f1fd; --stack:#d3e3f9; --hole:#dbe6f5;
+  --font:-apple-system,BlinkMacSystemFont,system-ui,"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+body{margin:0;background:linear-gradient(180deg,#e3eefd 0,#eef4fd 520px,#f1f5fb 100%) fixed;color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;letter-spacing:-0.3px;-webkit-font-smoothing:antialiased;word-break:keep-all}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px 48px}
+button,a,input{-webkit-tap-highlight-color:transparent}
+button:active,a:active{transform:scale(0.96)}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* header */
+header{padding:36px 4px 20px}
+h1{font-size:24px;font-weight:700;line-height:1.38;margin:0 0 6px;color:var(--blue);letter-spacing:-0.5px}
+.lede{color:var(--sub);font-size:15px;margin:0}
+.hrow{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-bottom:6px}
+.hrow h1{margin:0}
+.ckbtn{flex:none;border:0;background:#fff;color:var(--blue);font:inherit;font-size:13px;font-weight:700;padding:8px 12px;border-radius:999px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04);margin-bottom:3px}
+.ckbtn[aria-pressed="true"]{background:var(--blue);color:#fff}
+.addrow{display:flex;gap:8px;margin-top:8px;padding-top:14px;border-top:1px solid var(--line)}
+.addrow input{flex:1;min-width:0;height:40px;border:1px solid #e5e8eb;border-radius:10px;padding:0 12px;font:inherit;font-size:16px;color:var(--ink);background:#f9fafb}
+.addrow input:focus{outline:none;border-color:var(--blue);background:#fff}
+.addrow .btn{height:40px;min-width:44px;font-size:22px;font-weight:500;border:0;cursor:pointer}
+.cl li.custom{display:flex;align-items:center;gap:8px}
+.cl li.custom label{flex:1;min-width:0}
+.del{flex:none;order:3;width:28px;height:28px;border:0;border-radius:50%;background:var(--line);color:var(--cap);font-size:15px;line-height:1;cursor:pointer}
+
+/* 구멍 뚫린 카드 */
+.card{position:relative;background:#fff;border-radius:20px;padding:36px 20px 20px;margin:0 0 28px;box-shadow:0 10px 0 -2px var(--stack)}
+.card::before{content:"";position:absolute;top:13px;left:50%;transform:translateX(-50%);width:154px;height:10px;background:radial-gradient(circle at 5px 5px,var(--hole) 4.5px,transparent 5px) 0 0/22px 10px repeat-x}
+/* 맨 위 항공편 카드만 스케치북 스타일 */
+.day .card{box-shadow:none;padding-top:22px}
+.day .card::before{display:none}
+.ct{display:flex;align-items:center;gap:6px;font-size:17px;font-weight:700;margin:0 0 14px}
+.ct small{margin-left:auto;font-size:14px;font-weight:600;color:var(--cap)}
+
+/* 리스트 행 */
+.row{display:grid;grid-template-columns:40px 1fr auto;gap:14px;align-items:center;padding:10px 0}
+.row .ico,.stop .ico{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:19px;background:var(--ico)}
+.cap{font-size:13px;color:var(--cap);line-height:1.4}
+.row b,.stop h3{display:block;font-size:16px;font-weight:700;line-height:1.4;margin:1px 0 0;color:var(--ink)}
+.row .sub{font-size:13px;color:var(--sub);margin-top:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:58px;height:32px;padding:0 12px;border-radius:8px;background:var(--blue);color:#fff;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}
+.btn.gray{background:var(--line);color:var(--cap)}
+.btn.ext::after{content:"↗";margin-left:3px;font-weight:400}
+
+/* tabs */
+nav.tabs{position:sticky;top:0;z-index:10;background:rgba(233,241,253,.85);-webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px);padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 12px;margin:0 -16px 8px}
+.tabrow{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.tab{border:0;background:#fff;color:var(--ink);border-radius:12px;padding:8px 2px;font:inherit;cursor:pointer;text-align:center;transition:transform .15s ease}
+.tab b{display:block;font-size:14px;font-weight:700;line-height:1.3}
+.tab span{display:block;font-size:12px;color:var(--cap);line-height:1.3}
+.tab[aria-selected="true"]{background:var(--blue);color:#fff}
+.tab[aria-selected="true"] span{color:rgba(255,255,255,.8)}
+.tab .today{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:3px;vertical-align:2px}
+
+/* 하루 요약 카드 */
+.day{display:none}
+.day.on{display:block}
+.head h2{font-size:21px;font-weight:700;line-height:1.38;margin:0 0 8px;letter-spacing:-0.5px}
+.head .summary{font-size:14px;color:var(--sub);margin:0 0 16px}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;font-size:13px;font-weight:600;color:var(--sub)}
+.route span{background:var(--line);padding:4px 10px;border-radius:999px}
+.route i{font-style:normal;color:var(--cap);padding:0 2px}
+.fc{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-top:14px}
+.fc div{background:var(--line);border-radius:12px;padding:9px 12px;line-height:1.35}
+.fc .lb{display:block;font-size:12px;color:var(--cap)}
+.fc .v{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;flex-wrap:wrap;row-gap:0}
+.fc .v em{font-style:normal;font-size:18px;line-height:1}
+.fc .v small{font-size:12px;font-weight:500;color:var(--cap);white-space:nowrap}
+.fc .tp{font-size:16px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.fc .tp .lo{color:var(--blue)}.fc .tp .hi{color:var(--red)}
+.fcnote{font-size:12px;color:var(--cap);margin-top:8px}
+.wx{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:13px}
+.wx b{font-weight:600;color:var(--sub);margin-right:4px}
+
+/* 알아두면 좋을 것 */
+.note .ico{font-size:15px;font-weight:700;color:#fff;background:var(--red)}
+.note.ok .ico{background:var(--blue)}
+
+/* 일정: 타임라인 */
+.tl{background:#fff;margin:0 -16px 28px;padding:28px 14px 16px 6px;border-radius:28px}
+.tlh{font-size:24px;font-weight:700;letter-spacing:-0.6px;margin:0 0 4px 10px}
+.prog{font-size:15px;color:var(--sub);margin:0 0 22px 10px}
+.prog b{color:var(--blue)}
+.stops{list-style:none;margin:0;padding:0}
+.stops > li{display:grid;grid-template-columns:46px 1fr;gap:6px}
+.rail{display:flex;flex-direction:column;align-items:center}
+.rail .t{font-size:12px;font-weight:600;color:var(--cap);font-variant-numeric:tabular-nums;line-height:1.2;padding-top:16px;white-space:nowrap}
+.rail .t.alt{font-weight:500}
+.rail .dots{flex:1;width:6px;min-height:14px;margin-top:6px;background:radial-gradient(circle,#d1d6db 2.5px,transparent 3px) center top/6px 9px repeat-y}
+.stop.past .rail .dots,.stop.now .rail .dots,.move.past .rail .dots{background-image:radial-gradient(circle,#34c759 2.5px,transparent 3px)}
+.stop.now .rail .t,.stop.past .rail .t{color:#34c759}
+.stop{position:relative;padding-bottom:12px}
+.sc{position:relative;border-radius:20px;padding:16px 16px 16px 18px;background:linear-gradient(135deg,#eef6ff,#e0eeff);overflow:hidden}
+.cat-meal .sc{background:linear-gradient(135deg,#fff5ec,#ffe6d6)}
+.cat-play .sc{background:linear-gradient(135deg,#eefaf2,#dcf3e5)}
+.cat-stay .sc{background:linear-gradient(135deg,#f4f0ff,#e7e0ff)}
+.cat-car .sc{background:linear-gradient(135deg,#f2f5f8,#e4eaf0)}
+.cat-cafe .sc{background:linear-gradient(135deg,#fbf5ee,#f1e4d6)}
+.sc .top{display:flex;align-items:flex-start;gap:10px}
+.sc .top > div:first-child{flex:1;min-width:0}
+.sc .big{flex:none;font-size:40px;line-height:1;margin-top:2px}
+.sc .cap{font-size:12px;font-weight:600;color:var(--sub);margin-bottom:2px}
+.stop h3{font-size:19px;font-weight:700;line-height:1.3;margin:0;letter-spacing:-0.5px}
+.when{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:13px;font-weight:600;color:var(--sub);font-variant-numeric:tabular-nums}
+.when svg{flex:none}
+.stop.now .when{color:var(--blue)}
+.chips{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:10px}
+.chip{font-size:12px;font-weight:600;color:var(--sub)}
+.chip.check{color:var(--red)}
+.stop p{margin:8px 0 0;font-size:14px;color:var(--sub);line-height:1.5}
+.addr{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--cap)}
+.addr a{flex:none;display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:8px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;text-decoration:none}
+.addr span{min-width:0}
+.move .mv{display:flex;align-items:center;gap:6px;padding:0 4px 12px;font-size:12px;color:var(--cap)}
+.move svg{flex:none;width:16px;height:16px}
+.gap{display:none}
+
+/* 지금 · 지난 일정 */
+.stop.past .sc{opacity:.5}
+.stop.past h3{text-decoration:line-through}
+.move.past .mv{opacity:.5}
+.stop.now .sc{box-shadow:0 0 0 2px #34c759}
+.nowtag{display:none;position:absolute;top:0;right:16px;z-index:1;width:34px;padding:9px 0 16px;background:#EF4B5B;color:#fff;font-size:12px;font-weight:700;line-height:1.2;text-align:center;clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%)}
+.stop.now .nowtag{display:block}
+.stop.now .big{margin-top:34px}
+
+/* 준비물 */
+.cl{list-style:none;margin:0;padding:0}
+.cl label{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:8px 0;font-size:16px;font-weight:600;cursor:pointer;line-height:1.4}
+.cl input{order:2;appearance:none;-webkit-appearance:none;margin:0;flex:none;width:62px;height:32px;border-radius:8px;background:var(--blue);display:grid;place-items:center;cursor:pointer;transition:background .15s ease}
+.cl input::after{content:"챙기기";color:#fff;font-size:13px;font-weight:700;font-family:var(--font)}
+.cl input:checked{background:var(--line)}
+.cl input:checked::after{content:"완료";color:var(--cap)}
+.cl input:checked + span{color:var(--cap);text-decoration:line-through;font-weight:500}
+footer{margin-top:24px;color:var(--cap);font-size:12px;line-height:1.6;text-align:center}
+@media (max-width:380px){.card{padding:34px 16px 16px}.tab b{font-size:13px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="hrow"><h1>친구 셋이 떠나는<br>부산 1박 2일 여행</h1><button class="ckbtn" id="ckbtn" type="button" aria-pressed="false">🧳 준비물 체크</button></div>
+  <p class="lede" id="hdprog">KTX 왕복 · 3명 · 광안리 숙소 · 비 와도 실내 위주</p>
+</header>
+
+<section class="card">
+  <div class="ct">🚄 기차</div>
+  <div class="row"><div class="ico">🚄</div><div><div class="cap">10/24 토 · 가는 편 · KTX</div><b>09:58 서울역 출발</b><div class="sub">부산역 도착 12:46 · 서울역 09:30 집합</div></div></div>
+  <div class="row"><div class="ico">🏠</div><div><div class="cap">10/25 일 · 오는 편 · KTX</div><b>14:00 부산역 출발</b><div class="sub">서울역 도착 16:45</div></div></div>
+</section>
+
+<nav class="tabs" aria-label="날짜 선택">
+  <div class="tabrow" role="tablist" id="tabrow"></div>
+</nav>
+
+<main id="days"></main>
+
+<footer>이동 시간은 평소 기준 추정치예요. 연휴 교통상황에 따라 출발 전 내비게이션으로 다시 확인하세요.</footer>
+</div>
+
+<script>
+const CAR='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff" stroke="#d2d2d7"/><path d="M7 14.5h10M8 14.5l1.2-3.3a1 1 0 0 1 .9-.7h3.8a1 1 0 0 1 .9.7l1.2 3.3v1.8H8z" fill="none" stroke="#7a7a7a" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+
+const CLOCK='<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.6V8l2.3 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+
+const DAYS=[
+{id:'day1',w:{am:['비',60],pm:['비',60],lo:15,hi:19},wx:[['광안리','부산 수영구 날씨'],['센텀시티','부산 해운대구 날씨']],tab:'1일차',date:'10/24 토',ymd:'2026-10-24',
+ title:'비 오는 날엔 스파랜드, 저녁은 광안리 회',
+ route:['서울역','부산역','광안리','센텀시티','민락동'],
+ summary:'비 예보라 실내 위주로 짰어요. 점심 먹고 광안리 숙소에 짐 맡긴 뒤 센텀시티 스파랜드에서 쉬고, 저녁은 민락동 회센터에서. 이동은 셋이면 택시가 편해요.',
+ notes:[
+  {type:'warn',title:'여행 내내 비 예보',text:'기상청 기준 24~25일 부산에 20~60mm 비 예보예요. 실내 위주 일정이라 우산 하나면 되지만, 젖어도 되는 신발을 챙기세요.'},
+  {type:'warn',title:'드론쇼는 날씨 따라',text:'광안리 M 드론라이트쇼(토 19:00·21:00, 무료)는 비바람이 세면 취소돼요. 수영구 공식 SNS로 당일 확인하고, 창가 자리에서 보세요.'}],
+ items:[
+  {t:'09:30',h:'서울역 집합',key:1,ico:'🙋',cat:'car',p:'3명 모두 KTX 타는 곳에서 만나요. 코레일톡 승차권과 좌석 번호 확인.'},
+  {t:'09:58',h:'서울역 출발',key:1,ico:'🚄',cat:'car',chips:[['flight','KTX']],p:'약 2시간 50분. 간식과 커피는 역에서 미리 사서 타요.'},
+  {t:'12:46',h:'부산역 도착',ico:'🚉',cat:'car'},
+  {t:'13:00',h:'본전돼지국밥',key:1,meal:['lunch','점심'],chips:[['check','영업시간·웨이팅 확인']],map:'본전돼지국밥 부산역',addr:'부산 동구 초량동 (부산역 건너편)',p:'부산역에서 걸어서 5분 안팎. 첫 끼는 부산 돼지국밥으로.'},
+  {move:'14:00 출발 · 택시로 광안리까지 약 30분'},
+  {t:'14:30',h:'광안리 숙소 · 짐 맡기기',ico:'🏨',cat:'stay',chips:[['check','체크인 시간 확인']],p:'체크인 전이면 프런트에 짐만 맡겨요.'},
+  {move:'14:50 출발 · 택시로 센텀시티까지 약 10분'},
+  {t:'15:00',h:'신세계 센텀시티 스파랜드',key:1,ico:'♨️',chips:[['check','요금·운영시간 확인']],map:'신세계 센텀시티 스파랜드',addr:'부산 해운대구 센텀남대로 35 신세계백화점',p:'천연 온천탕과 테마 찜질방에서 비 오는 오후를 보내요. 기본 4시간 이용. 나와서 백화점 구경도 가능해요.'},
+  {move:'18:00 출발 · 택시로 민락동까지 약 15분'},
+  {t:'18:20',h:'민락어민활어직판장 회',key:1,meal:['dinner','저녁'],chips:[['check','초장집 영업 확인']],map:'민락어민활어직판장',addr:'부산 수영구 광안해변로312번길 60',p:'1층에서 횟감을 고르고 2층 초장집에서 먹어요. 셋이면 모둠회 중짜에 매운탕 추가.'},
+  {t:'20:30',h:'광안대교 뷰 바 · 카페',meal:['snack','2차'],chips:[['check','창가 자리']],map:'광안리 오션뷰 바',p:'광안대교가 보이는 실내 창가에서 한잔하며 드론쇼를 기다려요.'},
+  {t:'21:00',h:'광안리 M 드론라이트쇼',key:1,ico:'✨',chips:[['check','기상 취소 여부 확인']],map:'광안리해수욕장',p:'10분 안팎. 비가 오면 밖에 나가지 말고 창가에서 보세요.'},
+  {t:'21:30',h:'숙소 복귀',ico:'🛏️',cat:'stay',p:'광안리 숙소까지 걸어서.'}
+ ]},
+{id:'day2',w:{am:['비',60],pm:['비',50],lo:16,hi:21},wx:[['광안리','부산 수영구 날씨'],['영도','부산 영도구 날씨']],tab:'2일차',date:'10/25 일',ymd:'2026-10-25',
+ title:'해장하고 국립해양박물관, 밀면 먹고 귀가',
+ route:['광안리','영도','부산역','서울역'],
+ summary:'14:00 기차라 13:30까지 부산역 도착 기준으로 거꾸로 짰어요. 영도 국립해양박물관은 무료라 비 오는 오전에 들르기 좋아요.',
+ notes:[{type:'warn',title:'13:30까지 부산역 도착',text:'일요일 오후 비 오는 날은 택시가 막힐 수 있어요. 밀면은 12:10에는 먹기 시작하세요.'}],
+ items:[
+  {t:'09:00',h:'광안리 근처 해장',key:1,meal:['breakfast','아침'],chips:[['check','가게 고르기']],map:'광안리 해장국',p:'숙소 근처 국밥·대구탕집에서 속 풀기.'},
+  {t:'10:00',h:'체크아웃',ico:'🏨',cat:'stay',p:'짐 챙겨서 나와요.'},
+  {move:'10:10 출발 · 택시로 영도까지 약 30분'},
+  {t:'10:40',h:'국립해양박물관',key:1,ico:'🏛️',map:'국립해양박물관',addr:'부산 영도구 해양로301번길 45',p:'무료. 일요일 09:00~19:00, 월요일 휴관. 대형 수조와 배 전시를 1시간 정도 둘러봐요.'},
+  {move:'11:50 출발 · 택시로 부산역 앞까지 약 15분'},
+  {t:'12:10',h:'초량밀면',key:1,meal:['lunch','점심'],chips:[['check','웨이팅 확인']],map:'초량밀면',addr:'부산 동구 중앙대로 225',p:'10:00~21:30 영업, 연중무휴. 부산역에서 걸어서 가까워요. 밀면에 만두 추가.'},
+  {t:'13:10',h:'부산역 · 기념품',ico:'🎁',map:'삼진어묵 부산역',p:'역 안 어묵·빵 가게에서 기념품. 플랫폼 번호 확인.'},
+  {t:'14:00',h:'부산역 출발',key:1,ico:'🚄',cat:'car',chips:[['flight','KTX']]},
+  {t:'16:45',h:'서울역 도착',ico:'🏁',cat:'car',p:'수고했어요!'}
+ ]}
+];
+
+const CHECK=[
+ {title:'챙길 것',items:[
+  ['bs1','신분증'],
+  ['bs2','KTX 승차권 (코레일톡 · 왕복)'],
+  ['bs3','숙소 예약 확인 (광안리)'],
+  ['bs4','우산 또는 우비'],
+  ['bs5','젖어도 되는 신발'],
+  ['bs6','얇은 겉옷 (저녁 쌀쌀)'],
+  ['bs7','갈아입을 옷 · 속옷 (스파랜드용 포함)'],
+  ['bs8','세면도구 · 화장품'],
+  ['bs9','충전기 · 보조배터리'],
+  ['bs10','상비약'],
+  ['bs11','교통카드 (지하철·버스)']]}
+];
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// ?now=2026-10-07T15:50 으로 특정 시각을 미리 볼 수 있어요
+const nowOverride=(()=>{const q=new URLSearchParams(location.search).get('now');const d=q&&new Date(q);return d&&!isNaN(d)?d:null})();
+const getNow=()=>nowOverride||new Date();
+const ymdOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const todayYmd=(()=>{const d=getNow();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
+
+const WXI={'맑음':'☀️','구름조금':'🌤️','구름많음':'⛅','흐림':'☁️','비':'🌧️'};
+function renderFc(w){if(!w)return'';const c=(lb,x)=>`<div><span class="lb">${lb}</span><span class="v"><em aria-hidden="true">${WXI[x[0]]||''}</em>${esc(x[0])}<small>☂ ${x[1]}%</small></span></div>`;
+return `<div class="fc">${c('오전',w.am)}${c('오후',w.pm)}<div><span class="lb">최저·최고</span><span class="tp"><span class="lo">${w.lo}°</span> / <span class="hi">${w.hi}°</span></span></div></div><div class="fcnote">기상청 단기예보 · 10/23 기준</div>`}
+function renderDay(d){
+  let h=`<section class="day" id="${d.id}" role="tabpanel">
+  <div class="card head"><div class="ct">📍 ${esc(d.tab)} · ${esc(d.date)}</div><h2>${esc(d.title)}</h2><p class="summary">${esc(d.summary)}</p>
+  <div class="route">${d.route.map(r=>`<span>${esc(r)}</span>`).join('<i>›</i>')}</div>${renderFc(d.w)}${d.wx?`<div class="wx"><b>최신 예보</b>${d.wx.map(w=>`<a class="btn ext" href="https://search.naver.com/search.naver?query=${encodeURIComponent(w[1])}" target="_blank" rel="noopener">${esc(w[0])}</a>`).join('')}</div>`:''}</div>`;
+  if(d.notes.length){
+    h+='<div class="card"><div class="ct">📌 알아두면 좋을 것</div>';
+    d.notes.forEach(n=>{h+=`<div class="row note ${n.type}"><div class="ico">${n.type==='ok'?'✓':'!'}</div><div><b>${esc(n.title)}</b><div class="sub">${esc(n.text)}</div></div></div>`});
+    h+='</div>';
+  }
+  // 각 일정의 끝 시간 = 다음 일정 시작 시간
+  const toMin=t=>{const m=/^(\d\d):(\d\d)$/.exec(t);return m?+m[1]*60+ +m[2]:null};
+  const starts=[];let last=null;
+  d.items.forEach(it=>{if(it.move)return;const m=toMin(it.t);if(m!==null)last=m;starts.push(last)});
+  const uniq=[...new Set(starts)];
+  const fmt=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+  const total=d.items.filter(it=>!it.move&&!it.alt).length;
+  h+=`<div class="tl"><h3 class="tlh">${esc(d.tab)} 일정</h3><p class="prog" id="prog-${d.id}">${total}개 일정 중 <b>0</b>개 완료</p><ol class="stops">`;
+  let prevStop=false,idx=0;
+  d.items.forEach(it=>{
+    if(it.move){h+=`<li class="move" data-move="1"><div class="rail"><div class="dots"></div></div><div class="mv">${CAR}<span>${esc(it.move)}</span></div></li>`;prevStop=false;return}
+    if(prevStop)h+='<li class="gap" aria-hidden="true"></li>';
+    const start=starts[idx++],end=uniq[uniq.indexOf(start)+1];
+    const meal=it.meal?`<div class="cap">${esc(it.meal[1])}</div>`:'';
+    const chips=it.chips?`<div class="chips">${it.chips.map(c=>`<span class="chip ${c[0]}">${esc(c[1])}</span>`).join('')}</div>`:'';
+    const addr=(it.addr||it.map)?`<div class="addr">${it.map?`<a href="https://map.naver.com/p/search/${encodeURIComponent(it.map)}" target="_blank" rel="noopener">지도</a>`:''}<span>${esc(it.addr||'')}</span></div>`:'';
+    const MICON={breakfast:'🍳',lunch:'🍚',dinner:'🍽️',snack:'🍦'};
+    let icon='📍',cat='';
+    if(it.ico){icon=it.ico;cat=it.cat||(it.ico==='☕️'?'cafe':it.ico==='🛏️'?'stay':'play')}
+    else if(it.chips?.some(c=>c[0]==='flight'))icon='✈️';
+    else if(it.meal){icon=MICON[it.meal[0]]||'🍽️';cat='meal'}
+    else if(it.chips?.some(c=>c[0]==='baby')){icon='🧸';cat='play'}
+    else if(/체크인|숙소|리조트/.test(it.h)){icon='🏨';cat='stay'}
+    else if(/반납|렌터카|인수/.test(it.h)){icon='🚙';cat='car'}
+    const range=start==null?'':fmt(start)+(end!=null?' – '+fmt(end):'');
+    h+=`<li class="stop${it.key?' key':''}${cat?' cat-'+cat:''}" data-min="${start??''}" data-end="${end??''}" data-range="${range}">
+    <div class="rail"><span class="t${it.alt?' alt':''}">${esc(it.t)}</span><div class="dots"></div></div>
+    <div class="sc"><span class="nowtag">지금</span><div class="top"><div>${meal}<h3>${esc(it.h)}</h3>${range?`<div class="when">${CLOCK}<span class="rng">${range}</span></div>`:''}</div><div class="big" aria-hidden="true">${icon}</div></div>${chips}${it.p?`<p>${esc(it.p)}</p>`:''}${addr}</div></li>`;
+    prevStop=true;
+  });
+  return h+'</ol></div></section>';
+}
+function renderCheck(){
+  let h=`<section class="day" id="check" role="tabpanel"><div class="card head"><div class="ct">🧳 출발 전</div><h2>부산 준비물 체크</h2><p class="summary" id="ckcount" style="margin:0"></p></div>`;
+  CHECK.forEach(g=>{
+    h+=`<div class="card ckgroup"><div class="ct">🎒 ${esc(g.title)}<small data-g="${esc(g.title)}"></small></div><ul class="cl">`;
+    g.items.forEach(([id,t])=>{h+=`<li><label><input type="checkbox" id="ck_${id}"><span>${esc(t)}</span></label></li>`});
+    h+=`</ul><form class="addrow" id="addform"><input id="addinput" maxlength="40" placeholder="준비물 직접 추가" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit" aria-label="준비물 추가">+</button></form></div>`;
+  });
+  return h+'</section>';
+}
+
+const tabrow=document.getElementById('tabrow'),main=document.getElementById('days');
+main.innerHTML=DAYS.map(renderDay).join('')+renderCheck();
+tabrow.innerHTML=DAYS.map(d=>`<button class="tab" role="tab" data-day="${d.id}"><b>${d.tab}${d.ymd===todayYmd?'<span class="today" aria-label="오늘"></span>':''}</b><span>${d.date.split(' ·')[0]}</span></button>`).join('');
+
+function show(id){
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.day===id?'true':'false'));
+  document.querySelectorAll('.day').forEach(s=>s.classList.toggle('on',s.id===id));
+  document.getElementById('ckbtn').setAttribute('aria-pressed',id==='check'?'true':'false');
+  try{localStorage.setItem('busanTab',id)}catch(e){}
+}
+document.getElementById('ckbtn').addEventListener('click',()=>{show('check');window.scrollTo({top:document.querySelector('nav.tabs').offsetTop,behavior:'smooth'})});
+tabrow.addEventListener('click',e=>{const b=e.target.closest('.tab');if(b){show(b.dataset.day);window.scrollTo({top:Math.min(window.scrollY,document.querySelector('nav.tabs').offsetTop),behavior:'auto'})}});
+
+function updateCount(){
+  const all=document.querySelectorAll('.cl input'),done=[...all].filter(c=>c.checked).length;
+  document.getElementById('ckcount').textContent=done===all.length?'모든 짐을 다 챙겼어요!':done?`벌써 ${done}가지를 챙겼어요. ${all.length-done}가지 남았어요.`:`${all.length}가지를 챙겨야 해요.`;
+  document.getElementById('hdprog').textContent=done?`우와! 벌써 ${done}가지 짐을 챙겼어요.`:'KTX 왕복 · 3명 · 광안리 숙소 · 비 와도 실내 위주';
+  document.querySelectorAll('.ckgroup').forEach(g=>{const c=g.querySelectorAll('.cl input'),n=[...c].filter(x=>x.checked).length;g.querySelector('small').textContent=`${n}/${c.length}`});
+}
+// 서버(Turso)가 있으면 가족 모두와 공유, 없으면(GitHub Pages 등) 이 기기에만 저장
+let shared=false;
+const CL=document.querySelector('#check .cl');
+function restore(cb){try{if(localStorage.getItem(cb.id)==='1')cb.checked=true}catch(e){}}
+CL.querySelectorAll('input').forEach(restore);
+CL.addEventListener('change',e=>{
+  const cb=e.target;if(!cb.matches('input[type=checkbox]'))return;
+  try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}
+  updateCount();
+  if(shared)fetch('api/checks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:cb.id,done:cb.checked})}).catch(()=>{});
+});
+
+// 직접 추가한 준비물
+let customItems=[];
+try{customItems=JSON.parse(localStorage.getItem('busanCustom')||'[]')}catch(e){}
+const saveCustom=()=>{try{localStorage.setItem('busanCustom',JSON.stringify(customItems))}catch(e){}};
+function renderCustom(){
+  const keep={};CL.querySelectorAll('li.custom input').forEach(cb=>keep[cb.id]=cb.checked);
+  CL.querySelectorAll('li.custom').forEach(li=>li.remove());
+  customItems.forEach(it=>{
+    const li=document.createElement('li');li.className='custom';
+    li.innerHTML=`<label><input type="checkbox" id="ck_${esc(it.id)}"><span>${esc(it.label)}</span></label><button class="del" type="button" data-id="${esc(it.id)}" aria-label="${esc(it.label)} 삭제">×</button>`;
+    CL.appendChild(li);
+    const cb=li.querySelector('input');
+    if(cb.id in keep)cb.checked=keep[cb.id];else restore(cb);
+  });
+  updateCount();
+}
+renderCustom();
+document.getElementById('addform').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const inp=document.getElementById('addinput'),label=inp.value.trim();
+  if(!label)return;
+  inp.value='';
+  let item={id:'bc'+Math.random().toString(36).slice(2,10),label};
+  if(shared){
+    try{const r=await fetch('api/items?trip=busan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({label})});if(r.ok)item=await r.json()}catch(e){}
+  }
+  customItems.push(item);saveCustom();renderCustom();
+});
+CL.addEventListener('click',async e=>{
+  const b=e.target.closest('.del');if(!b)return;
+  const it=customItems.find(x=>x.id===b.dataset.id);if(!it)return;
+  if(!confirm(`'${it.label}' 항목을 지울까요?`))return;
+  customItems=customItems.filter(x=>x!==it);saveCustom();
+  try{localStorage.removeItem('ck_'+it.id)}catch(e){}
+  renderCustom();
+  if(shared)fetch('api/items?trip=busan&id='+encodeURIComponent(it.id),{method:'DELETE'}).catch(()=>{});
+});
+
+async function loadShared(){
+  try{
+    const ri=await fetch('api/items?trip=busan',{cache:'no-store'});
+    if(!ri.ok||!(ri.headers.get('content-type')||'').includes('json'))return;
+    customItems=await ri.json();saveCustom();shared=true;renderCustom();
+    const r=await fetch('api/checks',{cache:'no-store'});
+    if(!r.ok)return;
+    const data=await r.json();
+    CL.querySelectorAll('input').forEach(cb=>{if(cb.id in data){cb.checked=data[cb.id]===1;try{localStorage.setItem(cb.id,cb.checked?'1':'0')}catch(e){}}});
+    updateCount();
+  }catch(e){}
+}
+updateCount();
+loadShared();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadShared()});
+setInterval(()=>{if(!document.hidden)loadShared()},20000);
+
+let start=DAYS.find(d=>d.ymd===todayYmd)?.id;
+if(!start){try{start=localStorage.getItem('busanTab')}catch(e){}}
+show(document.getElementById(start||'')?start:'day1');
+
+// 오늘 일정에서 지금 시간에 해당하는 항목을 강조하고 지난 항목은 흐리게
+function markNow(){
+  const now=getNow(),ymd=ymdOf(now),min=now.getHours()*60+now.getMinutes();
+  let cur=null;
+  DAYS.forEach(d=>{
+    const lis=[...document.querySelectorAll(`#${d.id} .stops > li`)];
+    lis.forEach(li=>{li.classList.remove('now','past');const r=li.querySelector('.rng');if(r)r.textContent=li.dataset.range});
+    const stops=lis.filter(li=>li.classList.contains('stop'));
+    const main=stops.filter(li=>!li.querySelector('.t.alt'));
+    let done=0;
+    if(d.ymd<ymd){lis.forEach(li=>li.classList.add('past'));done=main.length}
+    else if(d.ymd===ymd){
+      const curMin=Math.max(-1,...stops.map(li=>+li.dataset.min).filter(m=>m<=min));
+      if(curMin>=0){
+        let reached=false;
+        lis.forEach(li=>{
+          if(li.classList.contains('stop')&&+li.dataset.min===curMin){
+            li.classList.add('now');reached=true;cur=cur||li;
+            const end=li.dataset.end,r=li.querySelector('.rng');
+            if(end!==''&&r)r.textContent=`${+end-min}분 남음`;
+          }
+          else if(!reached)li.classList.add('past');
+        });
+        done=main.filter(li=>li.classList.contains('past')).length;
+      }
+    }
+    const pg=document.querySelector(`#prog-${d.id} b`);if(pg)pg.textContent=done;
+  });
+  return cur;
+}
+const firstNow=markNow();
+if(firstNow&&firstNow.closest('.day.on'))setTimeout(()=>firstNow.scrollIntoView({block:'center',behavior:'smooth'}),300);
+if(!nowOverride)setInterval(markNow,30000);
+</script>
+</body>
+</html>

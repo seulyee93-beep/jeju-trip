@@ -61,7 +61,7 @@ h1{font-size:24px;font-weight:700;line-height:1.38;margin:0 0 6px;color:var(--bl
 
 /* tabs */
 nav.tabs{position:sticky;top:0;z-index:10;background:rgba(233,241,253,.85);-webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px);padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 12px;margin:0 -16px 8px}
-.tabrow{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.tabrow{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .tab{border:0;background:#fff;color:var(--ink);border-radius:12px;padding:8px 2px;font:inherit;cursor:pointer;text-align:center;transition:transform .15s ease}
 .tab b{display:block;font-size:14px;font-weight:700;line-height:1.3}
 .tab span{display:block;font-size:12px;color:var(--cap);line-height:1.3}
@@ -181,7 +181,7 @@ const CAR='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><c
 const CLOCK='<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.6V8l2.3 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
 
 const DAYS=[
-{id:'day1',w:{am:['비',60],pm:['비',60],lo:15,hi:19},wx:[['영도','부산 영도구 날씨'],['광안리','부산 수영구 날씨']],tab:'1일차',date:'10/24 토',ymd:'2026-10-24',
+{id:'day1',w:{am:['비',60],pm:['비',60],lo:15,hi:19},wx:[['영도','부산 영도구 날씨'],['광안리','부산 수영구 날씨']],tab:'1일차 A안',date:'10/24 토',ymd:'2026-10-24',
  title:'국밥 먹고 영도 카페·해양박물관, 저녁은 미포 조개구이',
  route:['서울역','부산역','영도','광안리','미포','광안리'],
  summary:'도착하자마자 정짓간에서 국밥 먹고, 영도 오션뷰 카페와 국립해양박물관에서 비를 피해요. 광안리 숙소에 짐 풀고 저녁은 해운대 미포끝집. 이동은 셋이면 택시가 편해요.',
@@ -204,6 +204,30 @@ const DAYS=[
   {move:'20:20 출발 · 택시로 광안리까지 약 20분'},
   {t:'20:40',h:'광안대교 뷰 바 · 카페',meal:['snack','2차'],chips:[['check','창가 자리']],map:'광안리 오션뷰 바',p:'광안대교가 보이는 실내 창가에서 한잔하며 드론쇼를 기다려요.'},
   {t:'21:00',h:'광안리 M 드론라이트쇼',key:1,ico:'✨',chips:[['check','기상 취소 여부 확인']],map:'광안리해수욕장',p:'10분 안팎. 비가 오면 밖에 나가지 말고 창가에서 보세요.'},
+  {t:'21:30',h:'숙소 복귀',ico:'🛏️',cat:'stay',p:'광안리 숙소까지 걸어서.'}
+ ]},
+{id:'day1b',w:{am:['비',60],pm:['비',60],lo:15,hi:19},wx:[['광안리','부산 수영구 날씨'],['센텀시티','부산 해운대구 날씨']],tab:'1일차 B안',date:'10/24 토',ymd:'2026-10-24',
+ title:'국밥 먹고 광안리 카페, 시립미술관 보고 분식',
+ route:['서울역','부산역','광안리','센텀시티','광안리'],
+ summary:'영도 대신 광안리 숙소 근처에서 움직이는 안이에요. 짐 먼저 두고 카페에서 쉬다가 부산시립미술관, 저녁은 맛나분식. 이동이 짧아 비 오는 날 더 편해요.',
+ notes:[
+  {type:'warn',title:'여행 내내 비 예보',text:'기상청 기준 24~25일 부산에 20~60mm 비 예보예요. 우산과 젖어도 되는 신발을 챙기세요.'},
+  {type:'warn',title:'부산시립미술관 재개관',text:'2년 공사를 마치고 9/17에 다시 열었어요. 바뀐 관람시간은 공식 누리집에서 확인하세요(전에는 월요일 휴관).'},
+  {type:'warn',title:'드론쇼는 날씨 따라',text:'광안리 M 드론라이트쇼(토 19:00·21:00, 무료)는 비바람이 세면 취소돼요. 수영구 공식 SNS로 당일 확인하세요.'}],
+ items:[
+  {t:'09:30',h:'서울역 집합',key:1,ico:'🙋',cat:'car',p:'3명 모두 KTX 타는 곳에서 만나요. 코레일톡 승차권과 좌석 번호 확인.'},
+  {t:'09:58',h:'서울역 출발',key:1,ico:'🚄',cat:'car',chips:[['flight','KTX']],p:'약 2시간 50분.'},
+  {t:'12:46',h:'부산역 도착',ico:'🚉',cat:'car'},
+  {t:'13:00',h:'정짓간 부산역점',key:1,meal:['lunch','점심'],chips:[['check','영업시간·웨이팅 확인']],map:'정짓간 부산역점',addr:'부산 동구 중앙대로209번길 11',p:'부산역 바로 앞. 마늘 듬뿍 들어간 돼지국밥이 대표 메뉴예요.'},
+  {move:'14:00 출발 · 택시로 광안리까지 약 30분'},
+  {t:'14:30',h:'광안리 숙소 · 짐 두기',ico:'🏨',cat:'stay',chips:[['check','체크인 시간 확인']],p:'체크인 전이면 프런트에 짐만 맡겨요.'},
+  {t:'14:50',h:'카페인차저 광안리 본점',key:1,ico:'☕️',chips:[['check','위치·영업시간 확인']],map:'카페인차저 광안리',p:'숙소 근처 카페에서 커피 마시며 쉬어가요.'},
+  {move:'16:00 출발 · 택시로 센텀시티까지 약 15분'},
+  {t:'16:15',h:'부산시립미술관',key:1,ico:'🖼️',chips:[['check','관람시간 확인']],map:'부산시립미술관',addr:'부산 해운대구 APEC로 58',p:'9월에 리노베이션을 마치고 재개관. 재개관 특별전 위주로 1시간 남짓 둘러봐요.'},
+  {move:'17:30 출발 · 맛나분식까지 (위치 따라 이동시간 확인)'},
+  {t:'18:00',h:'맛나분식',key:1,meal:['dinner','저녁'],chips:[['check','위치·영업시간 확인']],map:'맛나분식',p:'떡볶이·튀김·김밥으로 가볍게 저녁.'},
+  {t:'20:40',h:'광안대교 뷰 바 · 카페',meal:['snack','2차'],chips:[['check','창가 자리']],map:'광안리 오션뷰 바',p:'광안대교가 보이는 실내 창가에서 한잔하며 드론쇼를 기다려요.'},
+  {t:'21:00',h:'광안리 M 드론라이트쇼',key:1,ico:'✨',chips:[['check','기상 취소 여부 확인']],map:'광안리해수욕장',p:'10분 안팎. 비가 오면 창가에서 보세요.'},
   {t:'21:30',h:'숙소 복귀',ico:'🛏️',cat:'stay',p:'광안리 숙소까지 걸어서.'}
  ]},
 {id:'day2',w:{am:['비',60],pm:['비',50],lo:16,hi:21},wx:[['광안리','부산 수영구 날씨'],['부산역','부산 동구 날씨']],tab:'2일차',date:'10/25 일',ymd:'2026-10-25',
